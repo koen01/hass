@@ -1,0 +1,291 @@
+
+########################################################################
+#                               GROUPS                                  #
+########################################################################
+
+systemmonitor:
+  name: System monitor
+  entities:
+    - sensor.since_last_boot
+    - sensor.cpu_use
+
+woonkamer_lights:
+  name: Woonkamer verlichting
+  entities:
+    - light.tv_hoek
+    - light.leeslamp
+    - light.achterkamer
+    - light.woonkamer_muurschakelaar
+    - scene.leeslamp_gedimmed
+    - scene.woonkamer_normaal
+    - scene.woonkamer_maximaal
+    - scene.woonkamer_gedimmed
+
+deuren:
+  name: Deuren
+  entities:
+    - switch.voordeur
+    - switch.achterdeur
+   # - binary_sensor.achterdeur
+   # - binary_sensor.voordeur
+
+notify:
+  name: Notify
+  entities:
+    - input_boolean.notify_doors
+    - switch.deurbel
+    - switch.waarschuwing
+    - binary_sensor.motion_sensor_0_100
+
+temperatures_misc:
+  name: Overig
+  entities:
+    - climate.thermostaat
+    #- sensor.zwembad_sensor_6_0
+    - sensor.synology_nas__temp
+
+temperatures_inside:
+  name: Binnen
+  entities:
+    - sensor.netatmo_binnen_noise
+    - sensor.netatmo_binnen_co2
+    - sensor.netatmo_binnen2_co2
+    - sensor.netatmo_binnen_temperature
+    - sensor.netatmo_binnen2_temperature
+    - sensor.netatmo_binnen_humidity
+    - sensor.netatmo_binnen2_humidity
+    - sensor.sensor_3
+    - sensor.slaapkamer_eva
+    - sensor.slaapkamer_eva_2
+    - sensor.sensor_3_2
+
+netatmo_outside:
+  name: Buiten
+  entities:
+    - sensor.netatmo_binnen_pressure
+    - sensor.netatmo_buiten_temperature
+    - sensor.netatmo_buiten_humidity
+    - sensor.terras
+    - sensor.chickencoop_l298n_3_4
+    - sensor.chickencoop_l298n_3_3
+
+netatmo_min_max:
+    - sensor.netatmo_buiten_max_temp
+    - sensor.netatmo_buiten_min_temp
+    - sensor.netatmo_binnen_max_temp
+    - sensor.netatmo_binnen_min_temp
+    - sensor.netatmo_binnen2_max_temp
+    - sensor.netatmo_binnen2_min_temp
+
+netatmo_status:
+    - sensor.netatmo_buiten_battery
+    - sensor.netatmo_binnen2_battery
+    - sensor.netatmo_buiten_radio
+    - sensor.netatmo_binnen_wifi
+    - sensor.netatmo_binnen2_radio
+
+woonkamer_media:
+  name: Woonkamer multimedia
+  entities:
+    - media_player.kodi
+    - switch.computer
+
+irrigation:
+  name: 'Irrigation controller'
+  entities:
+    - input_slider.sprinklertimer
+    - input_boolean.sprinkler
+    #- input_boolean.sprinklerdummy
+    - sensor.irrigation_controller_7_0
+    #- sensor.irrigation_controller_7_99
+    #- sensor.irrigation_controller_7_99_2
+    - switch.irrigation_controller_7_1
+    - switch.irrigation_controller_7_2
+
+p1:
+  name: p1
+  entities:
+    - sensor.p1_actual_usage
+    - sensor.p1_gas_usage
+
+floor_heating:
+  name: 'Underfloor heating'
+  entities:
+    - sensor.temperature_sensor_1_0
+    - sensor.temperature_sensor_1_1
+    - sensor.temperature_sensor_1_3
+    - switch.temperature_sensor_1_100
+
+chickencoop:
+  name: 'ChickenCoop'
+  entities:
+    - switch.chickencoop_l298n_3_1
+    - switch.chickencoop_l298n_3_2
+    - sensor.chickencoop_l298n_3_0
+    - sensor.chickencoop_l298n_3_3
+    - sensor.chickencoop_l298n_3_4
+
+watermeter:
+  name: 'Watermeter'
+  entities:
+   - sensor.water_meter_35_1
+   - sensor.water_meter_35_1_2
+
+weather:
+  entities:
+    - sensor.weather_cloud_coverage
+    - sensor.weather_pressure
+    - sensor.weather_precip
+    - sensor.weather_precip_intensity
+    - sensor.weather_precip_probability
+    - camera.neerslag_radar
+    - camera.huidig
+    - camera.verwachting
+
+speedtest:
+  name: Speedtest
+  entities:
+    - sensor.speedtest_download
+    - sensor.speedtest_upload
+    - sensor.speedtest_ping
+
+transmission:
+  name: Transmission
+  entities:
+    - sensor.transmission_status
+    - sensor.transmission_down_speed
+    - sensor.transmission_up_speed
+
+nas:
+  name: Synology
+  entities:
+    - sensor.synology_nas__name
+    - sensor.synology_nas__temp
+    - sensor.synology_nas__dsm_version
+    - sensor.synology_nas__dsm_upgrade_available
+    - sensor.synology_nas__volume_1_total
+    - sensor.synology_nas__volume_1_used
+
+planten:
+  name: planten
+  entities:
+    - sensor.plant_1_conductivity
+    - sensor.plant_1_light_intensity
+    - sensor.plant_1_moisture
+    - sensor.plant_1_temperature
+    - sensor.plant_2_conductivity
+    - sensor.plant_2_light_intensity
+    - sensor.plant_2_moisture
+    - sensor.plant_2_temperature
+
+alarmclock:
+  name: Wake Me Up
+  entities:
+    - sensor.alarm_time
+    - input_slider.alarmhour
+    - input_slider.alarmminutes
+    - input_boolean.alarmstatus
+    - input_boolean.alarmweekday
+
+pihole:
+  name: pihole
+  entities:
+    - sensor.pihole
+
+mysensors_gateway:
+  name: mysensors gateway
+  entities:
+    - switch.mysensors_gateway
+
+sensebender:
+  name: sensebender
+  entities:
+    - sensor.sensebender_micro_1_36_1
+    - sensor.sensebender_micro_1_36_2
+    - sensor.sensebender_micro_1_36_199
+
+garage:
+  name: garage
+  entities:
+    - switch.garage_door_sensor_38_1
+    - sensor.garage_door_sensor_38_2
+    - sensor.car
+
+########################################################################
+#                               VIEWS                                  #
+########################################################################
+
+default_view:
+  view: yes
+  entities:
+    - sun.sun
+    - device_tracker.d74e578653984db1b1350a477c3c393e
+    - device_tracker.nina
+    - group.woonkamer_lights
+    - group.woonkamer_media
+#   - sensor.thermostaat_current_operation
+    - sensor.netatmo_buiten_temperature
+    - sensor.netatmo_binnen_temperature
+#   - sensor.netatmo_binnen_co2
+#   - sensor.netatmo_binnen2_co2
+    - sensor.chickencoop_l298n_3_0
+    - sensor.google_travel_time
+    - group.deuren
+    - group.notify
+    - cover.carport
+    - light.motionschuur
+    - light.Terras
+
+Plants:
+  name: Plants
+  view: yes
+  entities:
+    - group.planten
+
+cameras:
+  view: yes
+  entities:
+    - camera.schuur
+    - input_select.camera_presets
+    - camera.kippenhok
+
+temperature:
+  view: yes
+  name: Temperatures
+  entities:
+    - group.netatmo_outside
+    - group.temperatures_inside
+    - group.temperatures_misc
+  # - group.netatmo_min_max
+
+mysensors:
+  name: mysensors
+  view: yes
+  entities:
+    - group.mysensors_gateway
+    - group.floor_heating
+    - group.irrigation
+    - group.chickencoop
+    - group.sensebender
+    - switch.test_33_1
+    - switch.test_33_2
+    - group.watermeter
+    - group.garage
+
+climate:
+  view: yes
+  name: Weather
+  entities:
+    - group.weather
+
+status:
+  name: Status
+  view: yes
+  entities:
+    - group.p1
+    - group.pihole
+    - group.speedtest
+    - group.netatmo_status
+    - group.transmission
+    - group.nas
+    - group.systemmonitor

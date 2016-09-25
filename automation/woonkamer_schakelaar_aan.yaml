@@ -1,0 +1,8 @@
+alias: Woonkamerschakelaar_aan
+trigger:
+  platform: state
+  entity_id: light.woonkamer_muurschakelaar
+  to: 'on' 
+action:
+  service: scene.turn_on
+  entity_id: scene.woonkamer_normaal

@@ -1,0 +1,23 @@
+alias: sprinkler timer
+trigger:
+  platform: state
+  entity_id: input_boolean.sprinkler
+  from: 'off'
+  to: 'on'
+action:
+  - service: notify.telegram_koen
+    data:
+      title: ''
+      message: Sprinkler turned on!
+  - service: homeassistant.turn_on
+    entity_id: switch.irrigation_controller_7_1
+  - delay: '00:{{ states.input_slider.sprinklertimer.state | int }}:00'
+  - service: homeassistant.turn_off
+    entity_id: switch.irrigation_controller_7_1
+  - service: homeassistant.turn_on
+    entity_id: switch.irrigation_controller_7_2
+  - delay: '00:{{ states.input_slider.sprinklertimer.state | int }}:00'
+  - service: homeassistant.turn_off
+    entity_id: switch.irrigation_controller_7_2
+  - service: homeassistant.turn_off
+    entity_id: input_boolean.sprinkler

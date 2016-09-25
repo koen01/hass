@@ -1,0 +1,8 @@
+alias: 'Chickencoop changed state'
+trigger:
+  platform: state
+  entity_id: switch.chickencoop_l298n_8_1
+action:
+  service: notify.notify
+  data:
+    message: Kippenhok just changed to {{ states('switch.chickencoop_l298n_8_1') }}

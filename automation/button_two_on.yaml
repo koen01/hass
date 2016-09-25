@@ -1,0 +1,8 @@
+alias: button two on
+trigger:
+  platform: state
+  entity_id: switch.knop_2
+  to: 'on'
+action:
+  service: scene.turn_on
+  entity_id: scene.leeslamp_gedimmed

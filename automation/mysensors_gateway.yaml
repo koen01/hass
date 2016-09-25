@@ -1,0 +1,15 @@
+alias: MySensors Gateway states
+trigger:
+  platform: state
+  entity_id: switch.mysensors_gateway
+  state: 'off'
+  for:
+    minutes: 2
+action:
+  service: notify.telegram_koen
+  data_template:  
+    title: ''
+    message: >
+        MySensors Gateway just changed from {{ trigger.from_state.state }}
+        to {{ trigger.to_state.state }}
+

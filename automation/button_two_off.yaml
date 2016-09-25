@@ -1,0 +1,8 @@
+alias: Button two off
+trigger:
+  platform: state
+  entity_id: switch.knop_2
+  to: 'off'
+action:
+  service: homeassistant.turn_off
+  entity_id: light.leeslamp

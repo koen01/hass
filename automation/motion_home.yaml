@@ -1,0 +1,20 @@
+alias: motion detected while at home
+trigger:
+  platform: state
+  entity_id: light.motionschuur
+  from: 'off'
+  to: 'on'
+condition:
+  condition: state
+  entity_id: group.all_devices
+  state: 'home'
+action:
+  - delay: 00:00:01
+  - service: notify.telegram_koen
+    data:
+      title: ''
+      message: Motion detected!
+      data:
+        photo:
+          - url: !secret foscam_url
+            caption: 'Motion detected!'

@@ -1,0 +1,8 @@
+alias: button three on
+trigger:
+  platform: state
+  entity_id: switch.knop_3
+  to: 'on' 
+action:
+  service: light.turn_on
+  entity_id: light.terras

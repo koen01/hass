@@ -1,0 +1,11 @@
+alias: Button one off
+trigger:
+  platform: state
+  entity_id: switch.knop_1
+  to: 'off' 
+action:
+  service: homeassistant.turn_off
+  entity_id:
+  - light.tv_hoek
+  - light.leeslamp
+  - light.achterkamer

@@ -1,0 +1,453 @@
+homeassistant:
+  name: Home
+  latitude: 51.151682
+  longitude: 6.064496
+  elevation: 27
+  unit_system: metric
+  time_zone: Europe/Amsterdam
+
+  customize: !include customize.yaml
+
+automation: !include_dir_list automation
+group: !include groups.yaml
+
+http:
+  api_password: !secret http_password
+  server_port: 8124
+
+mqtt:
+  broker: 10.0.1.59
+  port: 1883
+  username: !secret mqtt_username
+  password: !secret mqtt_password
+
+influxdb:
+  host: 127.0.0.1
+  database: home_assistant
+  username: !secret influx_user
+  password: !secret influx_password
+
+#device_tracker:
+#  platform: owntracks
+#  max_gps_accuracy: 200
+
+device_tracker:
+  platform: locative
+
+device_tracker nmap:
+  platform: nmap_tracker
+  hosts: 10.0.1.1/24
+  home_interval: 10
+  track_new_devices: false
+
+netatmo:
+  api_key: !secret netatmo_api_key
+  secret_key: !secret netatmo_secret_key
+  username: !secret netatmo_username
+  password: !secret netatmo_password
+
+zone:
+  name: Work
+  latitude: !secret work_latitude
+  longitude: !secret work_longitude
+  radius: 500
+  icon: mdi:worker
+
+notify telegram:
+  name: telegram_koen
+  platform: telegram
+  api_key: !secret telegram_api_key
+  chat_id: !secret telegram_chat_id
+
+climate:
+  platform: netatmo
+
+logger:
+  default: info
+  logs:
+    homeassistant.components.mysensors: critical
+    homeassistant.components.rfxrtx: critical
+
+history:
+recorder:
+  purge_days: 14
+
+sun:
+frontend:
+updater:
+logbook:
+
+sensor 2:
+  platform: speedtest
+  monitored_conditions:
+    - ping
+ #   - download
+ #   - upload
+
+sensor 3:
+  platform: time_date
+  display_options:
+    - 'time'
+
+sensor 4:
+  platform: rfxtrx
+  automatic_add: True
+  devices:
+    0a5207297c0e01163b0159:
+      name: Slaapkamer Eva
+      data_type:
+       - Temperature
+       - Humidity
+    0a520d179d0200e63d0179:
+      name: Sensor 2
+      data_type:
+       - Temperature
+       - Humidity
+    0a520d19310300e03c0169:
+      name: Sensor 3
+      data_type:
+       - Temperature
+       - Humidity
+    0a520d23570100da4c0369:
+      name: Terras
+      data_type:
+       - Temperature
+       - Humidity
+
+sensor 5:
+  platform: transmission
+  host: 10.0.1.13
+  port: 9091
+  name: Transmission
+  username: !secret transmission_username
+  password: !secret transmission_password
+  monitored_variables:
+    - 'current_status'
+    - 'download_speed'
+    - 'upload_speed'
+
+sensor 6:
+    platform: google_travel_time
+    name: Google Travel Time
+    api_key: !secret google_api_key
+    origin: !secret google_origin
+    destination: !secret google_destination
+    options:
+     arrival_time: 08:30:00
+
+sensor nas1:
+    platform: snmp
+    name: "Synology NAS - Name"
+    host: 10.0.1.13
+    community: public
+    baseoid: .1.3.6.1.4.1.6574.1.5.1.0
+
+sensor nas2:
+    platform: snmp
+    name: "Synology NAS - Temp"
+    host: 10.0.1.13
+    community: public
+    baseoid: .1.3.6.1.4.1.6574.1.2.0
+    unit_of_measurement: "°C"
+
+sensor nas3:
+    platform: snmp
+    name: "Synology NAS - DSM version"
+    host: 10.0.1.13
+    community: public
+    baseoid: .1.3.6.1.4.1.6574.1.5.3.0
+
+sensor 7:
+  platform: systemmonitor
+  resources:
+#    - type: memory_free
+#    - type: memory_use_percent
+    - type: processor_use
+    - type: since_last_boot
+
+sensor 8:
+  platform: mqtt
+  state_topic: "events/p1/1-0:21.7.0"
+  name: "P1 Actual usage"
+  qos: 0
+  unit_of_measurement: "W"
+  value_template: '{{ value | multiply(1000) }}'
+
+sensor 9:
+  platform: mqtt
+  state_topic: "events/p1/0-1:24.2.1"
+  name: "P1 Gas usage"
+  qos: 0
+  unit_of_measurement: "m3"
+
+sensor plant 1:
+ platform: miflora
+ mac: C4:7C:8D:60:BD:4D
+ name: plant 1
+ force_update: false
+ monitored_conditions:
+  - moisture
+  - light
+  - temperature
+  - conductivity
+
+sensor plant 2:
+ platform: miflora
+ mac: C4:7C:8D:60:BF:D1
+ name: plant 2
+ force_update: false
+ monitored_conditions:
+  - moisture
+  - light
+  - conductivity
+
+sensor netatmo:
+  platform: netatmo
+  station: Steegstraat
+  modules:
+    Binnen:
+      - temperature
+      - humidity
+      - noise
+      - pressure
+      - co2
+      - wifi_status
+      - min_temp
+      - max_temp
+    Binnen2:
+      - temperature
+      - humidity
+      - co2
+      - battery_vp
+      - min_temp
+      - max_temp
+      - rf_status
+    Buiten:
+      - temperature
+      - humidity
+      - battery_vp
+      - min_temp
+      - max_temp
+      - rf_status
+
+sensor template:
+  platform: template
+  sensors:
+    thermostaat_current_operation:
+      entity_id: climate.thermostaat
+      friendly_name: 'Boiler status'
+      value_template: "{{ states.climate.thermostaat.attributes.current_operation }}"
+    car:
+      entity_id: sensor.garage_door_sensor_38_2
+      friendly_name: 'Car'
+      value_template: >-
+            {%- if states('sensor.garage_door_sensor_38_2') | float < 100 %}
+                parked
+            {% else %}
+                away
+            {%- endif %}
+
+camera:
+  platform: foscam
+  ip: 10.0.1.35
+  name: Schuur
+  port: 88
+  username: !secret foscam_username
+  password: !secret foscam_password
+
+camera 2:
+  platform: generic
+  still_image_url: http://10.0.1.20:99/snapshot.cgi
+  name: Kippenhok
+  username: !secret kippenhok_user
+  password: !secret kippenhok_password
+
+camera neerslag:
+  platform: generic
+  still_image_url: http://cdn.knmi.nl/knmi/map/page/weer/actueel-weer/neerslagradar/WWWRADARTMP_loop.gif
+  name: Neerslag radar
+
+camera verwachting:
+  platform: generic
+  still_image_url: http://cdn.knmi.nl/knmi/map/current/weather/forecast/kaart_verwachtingen_Morgen_dag.gif
+  name: Verwachtingen morgen
+
+camera huidig:
+  platform: generic
+  still_image_url: http://cdn.knmi.nl/knmi/map/page/weer/actueel-weer/temperatuur.png
+  name: Huidig
+
+rfxtrx:
+  device: '/dev/ttyUSB-RFX433'
+  debug: True
+  dummy: False
+
+mysensors:
+  gateways:
+    - device: '10.0.1.16'
+      persistence_file: '/home/hass/.homeassistant/mysensors.json'
+      tcp_port: 5003
+  debug: True
+  persistence: True
+  version: '1.5'
+  optimistic: false
+
+media_player:
+  platform: kodi
+  host: http://10.0.1.19
+  port: 8080
+  name: Kodi
+  user: 1234
+  password: 1234
+  turn_off_action: shutdown
+
+
+light:
+ platform: limitlessled
+ bridges:
+   - host: 10.0.1.22
+     version: 5
+     port: 8899
+     groups:
+     - number: 1
+       type: rgbw
+       name: TV Hoek
+     - number: 3
+       type: rgbw
+       name: Leeslamp
+     - number: 4
+       type: rgbw
+       name: Achterkamer
+
+light 2:
+  platform: rfxtrx
+  automatic_add: True
+  devices:
+    0b110042009b490602010f70:
+        name: Woonkamer muurschakelaar
+    0b11003b0001020305010f60:
+        name: Terras
+    0b11002f00b4c65e0a010f50:
+        name: Motion/Schuur
+
+switch:
+  platform: wake_on_lan
+  mac_address: "8C:89:A5:C1:6D:8A"
+  name: "Computer"
+  host: "10.0.1.19"
+
+switch gateway:
+  platform: wake_on_lan
+  mac_address: "DE:AD:BE:EF:FE:ED"
+  name: "Mysensors Gateway"
+  host: "10.0.1.16"
+
+switch 2:
+  platform: rfxtrx
+  automatic_add: True
+  devices:
+    0b11003d00cd92fe0a010f70:
+      name: Voordeur
+    0b11001100a38f160a010f60:
+      name: Achterdeur
+    0b11003b00bcf2a201010f60:
+      name: Knop 1
+    0b11003e00bcf2a202010f60:
+      name: Knop 2
+    0b11003f00bcf2a203010f60:
+      name: Knop 3
+    0b1100d001487be201040f70:
+      name: Deurbel
+      fire_event: True
+    0b1100d001500be201040f70:
+      name: Waarschuwing
+      fire_event: True
+    08200330df47000650:
+      name: brandmelder bijkeuken
+      fire_event: True
+
+cover:
+  platform: rfxtrx
+  devices:
+    071a000000000001:
+      name: Carport
+
+input_slider:
+  sprinklertimer:
+    name: Sprinkler timer
+    icon: mdi:clock
+    initial: 45
+    min: 0
+    max: 60
+    step: 5
+
+input_select:
+  camera_presets:
+    name: Camera presets
+    options:
+     - Preset 1
+     - Preset 2
+     - Preset 3
+     - Preset 4
+    initial: Preset 1
+    icon: mdi:video
+
+input_boolean:
+  notify_doors:
+    name: Notify when doors open
+    initial: off
+    icon: mdi:alert-circle-outline
+  sprinkler:
+    name: Sprinkler program
+    initial: off
+    icon: mdi:timer
+
+shell_command:
+  camera_preset_1: !secret camera_preset_1
+  camera_preset_2: !secret camera_preset_2
+  camera_preset_3: !secret camera_preset_3
+  camera_preset_4: !secret camera_preset_4
+
+scene:
+  - name: 'Woonkamer normaal'
+    entities:
+      light.tv_hoek:
+        state: on
+        brightness: 140
+        rgb_color: [255, 255, 255]
+      light.leeslamp: off
+      light.achterkamer:
+        state: on
+        brightness: 140
+        rgb_color: [255, 255, 255]
+
+scene 2:
+  - name: 'Woonkamer maximaal'
+    entities:
+      light.tv_hoek:
+        state: on
+        brightness: 255
+      light.leeslamp:
+        state: on
+        brightness: 255
+      light.achterkamer:
+        state: on
+        brightness: 255
+
+scene 3:
+  - name: 'Woonkamer gedimmed'
+    entities:
+      light.tv_hoek:
+        state: on
+        brightness: 155
+        rgb_color: [255, 130, 2]
+      light.leeslamp: off
+      light.achterkamer: off
+
+scene 4:
+  - name: 'Leeslamp gedimmed'
+    entities:
+      light.leeslamp:
+        state: on
+        brightness: 161
+        rgb_color: [255, 255, 255]

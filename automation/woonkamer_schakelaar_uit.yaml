@@ -1,0 +1,11 @@
+alias: Woonkamerschakelaar_uit
+trigger:
+  platform: state
+  entity_id: light.woonkamer_muurschakelaar
+  to: 'off' 
+action:
+  service: homeassistant.turn_off
+  entity_id:
+  - light.tv_hoek
+  - light.leeslamp
+  - light.achterkamer

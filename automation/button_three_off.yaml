@@ -1,0 +1,9 @@
+alias: Button three off
+trigger:
+  platform: state
+  entity_id: switch.knop_3
+  to: 'off' 
+action:
+  service: homeassistant.turn_off
+  entity_id:
+  - light.terras

@@ -1,0 +1,136 @@
+     light.woonkamer_muurschakelaar:
+       friendly_name: 'Woonkamer muurschakelaar'
+       assumed_state: false
+     sensor.irrigation_controller_7_0:
+       friendly_name: 'Moisture sensor'
+       icon: mdi:percent
+     sensor.irrigation_controller_7_99:
+       friendly_name: 'Water flow'
+       icon: mdi:water-percent
+     sensor.irrigation_controller_7_99_2:
+       friendly_name: 'Water volume'
+       icon: mdi:water-percent
+     switch.irrigation_controller_7_1:
+       friendly_name: 'Valve 1'
+       icon: mdi:water-pump
+     switch.irrigation_controller_7_2:
+       friendly_name: 'Valve 2'
+       icon: mdi:water-pump
+     switch.irrigation_controller_2_3:
+       friendly_name: 'Valve 3'
+       icon: mdi:water-pump
+     switch.irrigation_controller_2_4:
+       friendly_name: 'Valve 4'
+       icon: mdi:water-pump
+     sensor.water_meter_35_1:
+       friendly_name: 'Water flow l/min'
+       icon: mdi:speedometer
+     sensor.water_meter_35_1_2:
+       friendly_name: 'Watermeter m3'
+       icon: mdi:water
+     switch.chickencoop_l298n_3_1:
+       friendly_name: 'Kippenhok'
+       icon: mdi:lock
+     switch.chickencoop_l298n_3_2:
+       friendly_name: 'Kippenhok manual'
+       icon: mdi:lock
+       assumed_state: true
+     sensor.chickencoop_l298n_3_0:
+       friendly_name: 'Lux'
+       icon: mdi:brightness-6
+     sensor.chickencoop_l298n_3_3:
+       friendly_name: 'Kippenhok RH'
+       icon: mdi:water-percent
+     sensor.chickencoop_l298n_3_4:
+       friendly_name: 'Kippenhok Temp'
+     sensor.temperature_sensor_1_0:
+       friendly_name: 'Vloerverwarming in'
+     sensor.temperature_sensor_1_1:
+       friendly_name: 'Vloerverwarming uit'
+     sensor.temperature_sensor_1_3:
+       friendly_name: 'Lichtlevel bijkeuken'
+     switch.achterdeur:
+       icon: mdi:lock
+       assumed_state: false
+       #hidden: true
+     switch.voordeur:
+       icon: mdi:lock
+       assumed_state: false
+       #hidden: true
+     switch.computer:
+       icon: mdi:desktop-mac
+     light.motionschuur:
+       friendly_name: 'Motion'
+       icon: mdi:alert-outline
+     device_tracker.nina:
+       friendly_name: 'Nina'
+       icon: mdi:human-female
+     device_tracker.d74e578653984db1b1350a477c3c393e:
+       friendly_name: 'Koen'
+       icon: mdi:human-male
+     device_tracker.macbookprovankoen:
+       friendly_name: 'Macbook Pro'
+       icon: mdi:desktop-mac
+     device_tracker.samsungdecoder:
+       friendly_name: 'Samsung decoder'
+       icon: mdi:television
+     sensor.slaapkamer_eva_2:
+       friendly_name: 'Slaapkamer Eva RH'
+       icon: mdi:water-percent
+     switch.deurbel:
+       friendly_name: 'Deurbel'
+       icon: mdi:bell-ring
+       assumed_state: false
+     switch.waarschuwing:
+       friendly_name: 'Waarschuwing'
+       icon: mdi:bell-ring
+       assumed_state: false
+     sensor.netatmo_buiten_temperature:
+       friendly_name: 'Buiten Temp'
+     sensor.netatmo_buiten_humidity:
+       friendly_name: 'Buiten RH'
+     sensor.netatmo_binnen_pressure:
+       friendly_name: 'Luchtdruk'
+     sensor.netatmo_binnen_co2:
+       friendly_name: 'Woonkamer co2'
+     sensor.netatmo_binnen2_co2:
+       friendly_name: 'Eetkamer co2'
+     sensor.netatmo_binnen_temperature:
+       friendly_name: 'Woonkamer Temp'
+     sensor.netatmo_binnen2_temperature:
+       friendly_name: 'Eetkamer Temp'
+     sensor.netatmo_binnen_humidity:
+       friendly_name: 'Woonkamer RH'
+     sensor.netatmo_binnen2_humidity:
+       friendly_name: 'Eetkamer RH'
+     sensor.zwembad_sensor_6_0:
+       friendly_name: 'Zwembad Temp'
+       icon: mdi:swim
+     sensor.sensor_3:
+       friendly_name: 'Slaapkamer'
+     sensor.sensor_3_2:
+       friendly_name: 'Slaapkamer RH'
+       icon: mdi:water-percent
+     switch.mysensors_gateway:
+       icon: mdi:server-network
+     switch.temperature_sensor_1_100:
+       friendly_name: 'Backlight'
+       icon: mdi:monitor
+     binary_sensor.motion_sensor_0_100:
+       friendly_name: 'Motion sensor'
+     sensor.thermostaat_current_operation:
+       friendly_name: 'Verwarming status'
+       icon: mdi:fire
+     sensor.pihole:
+       friendly_name: 'Ads blocked today:'
+       icon: mdi:internet-explorer
+     sensor.car:
+       friendly_name: 'Auto'
+       icon: mdi:car
+     switch.garage_door_sensor_38_1:
+       friendly_name : 'Carport'
+       icon: mdi:home
+     sensor.garage_door_sensor_38_2:
+       friendly_name : 'Parking sensor'
+       icon: mdi:parking
+       unit_of_measurement: "cm"

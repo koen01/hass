@@ -1,0 +1,19 @@
+alias: 'Open carport at 07:00'
+trigger:
+  platform: time
+  after: '07:00:00'
+condition:
+  condition: and
+  conditions: 
+    - condition: time
+      weekday:
+        - mon
+        - wed 
+        - thu
+        - fri
+    - condition: state
+      entity_id: group.all_devices
+      state: 'home'
+action:
+    service: cover.open_cover
+    entity_id: cover.carport

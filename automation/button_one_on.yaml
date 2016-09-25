@@ -1,0 +1,8 @@
+alias: button one on
+trigger:
+  platform: state
+  entity_id: switch.knop_1
+  to: 'on' 
+action:
+  service: scene.turn_on
+  entity_id: scene.woonkamer_normaal

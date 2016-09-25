@@ -1,0 +1,21 @@
+alias: Notify when doors open
+trigger:
+  platform: state
+  entity_id: group.deuren
+  from: 'off'
+  to: 'on' 
+condition:
+  condition: state 
+  entity_id: input_boolean.notify_doors
+  state: 'on'
+action:
+  - service: notify.telegram_koen
+    data:
+      title: ''
+      message: Deur open!
+  - service: homeassistant.turn_on
+    entity_id: switch.waarschuwing
+  - delay: 0:10
+  - service: homeassistant.turn_off
+    entity_id: switch.waarschuwing
+

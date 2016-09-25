@@ -1,0 +1,32 @@
+alias: 'Chickencoop closed'
+trigger:
+  platform: state
+  entity_id: switch.chickencoop_l298n_3_1
+  from: 'on'
+  to: 'off'
+action:
+  - service: shell_command.camera_preset_1
+  - delay: 00:00:40
+  - service: notify.telegram_koen
+    data:
+      title: ''
+      message: ''
+      data:
+        photo:
+          - url: http://10.0.1.20:99/snapshot.cgi
+            username: !secret wanscam_user
+            password: !secret wanscam_password
+            caption: Kippenhok just closed
+  - delay: 00:00:10
+  - service: shell_command.camera_preset_4
+  - delay: 00:00:30
+  - service: notify.telegram_koen
+    data:
+      title: ''
+      message: ''
+      data:
+        photo:
+          - url: http://10.0.1.20:99/snapshot.cgi
+            username: !secret wanscam_user
+            password: !secret wanscam_password 
+            caption: Kippenhok closed

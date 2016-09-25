@@ -1,0 +1,10 @@
+alias: 'Koen changed states'
+trigger:
+  platform: state
+  entity_id: device_tracker.d74e578653984db1b1350a477c3c393e
+  to: 'home'
+action:
+  service: notify.telegram_koen
+  data:
+    title: ''
+    message: Koen just changed to {{ states('device_tracker.d74e578653984db1b1350a477c3c393e') }}

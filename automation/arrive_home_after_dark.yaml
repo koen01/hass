@@ -1,0 +1,12 @@
+alias: Turn lights on when arrive home after dark
+trigger:
+  platform: state
+  entity_id: group.all_devices
+  from: not_home
+  to: home
+condition:
+  condition: template
+  value_template: '{{ states.sun.sun.attributes.elevation < 3.5 }}'
+action:
+  service: scene.turn_on
+  entity_id: scene.woonkamer_normaal

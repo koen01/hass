@@ -1,0 +1,13 @@
+alias: 'Turn lights on when the sun gets dim'
+trigger:
+  platform: numeric_state
+  entity_id: sun.sun
+  value_template: '{{ state.attributes.elevation }}'
+  below: 3.5
+condition:
+  condition: state
+  entity_id: group.all_devices
+  state: home
+action:
+    service: scene.turn_on
+    entity_id: scene.woonkamer_normaal

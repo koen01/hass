@@ -1,0 +1,7 @@
+alias: Camera preset 3
+trigger:
+  - platform: state
+    entity_id: input_select.camera_presets
+    state: 'Preset 3' 
+action:
+  service: shell_command.camera_preset_3
