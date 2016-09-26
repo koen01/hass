@@ -247,6 +247,10 @@ sensor template:
                 away
             {%- endif %}
 
+sensor pi-hole:
+  - platform: pi_hole
+    host: 127.0.0.1
+
 camera:
   platform: foscam
   ip: 10.0.1.35
