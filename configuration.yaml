@@ -470,13 +470,5 @@ scene 4:
     entities:
       light.leeslamp:
         state: on
-        brightness: 161
-        rgb_color: [255, 255, 255]
-
-scene 5:
-  - name: 'Leeslamp flash'
-    entities:
-      light.leeslamp:
-        flash: short
-        brightness: 161
+        brightness: 140
         rgb_color: [255, 255, 255]
