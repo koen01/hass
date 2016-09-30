@@ -22,10 +22,10 @@ mqtt:
   password: !secret mqtt_password
 
 influxdb:
-  host: 127.0.0.1
-  database: home_assistant
-  username: !secret influx_user
-  password: !secret influx_password
+ host: 127.0.0.1
+ database: home_assistant
+ username: !secret influx_user
+ password: !secret influx_password
 
 #device_tracker:
 #  platform: owntracks
@@ -166,12 +166,12 @@ sensor 7:
     - type: since_last_boot
 
 sensor 8:
-  platform: mqtt
-  state_topic: "events/p1/1-0:21.7.0"
-  name: "P1 Actual usage"
-  qos: 0
-  unit_of_measurement: "W"
-  value_template: '{{ value | multiply(1000) }}'
+ platform: mqtt
+ state_topic: "events/p1/1-0:21.7.0"
+ name: "P1 Actual usage"
+ qos: 0
+ unit_of_measurement: "W"
+ value_template: '{{ value | multiply(1000) }}'
 
 sensor 9:
   platform: mqtt
@@ -231,25 +231,36 @@ sensor netatmo:
       - rf_status
 
 sensor template:
-  platform: template
-  sensors:
-    thermostaat_current_operation:
-      entity_id: climate.thermostaat
-      friendly_name: 'Boiler status'
-      value_template: "{{ states.climate.thermostaat.attributes.operation_mode }}"
-    thermostaat_current_setpoint:
-      entity_id: climate.thermostaat
-      friendly_name: 'Thermostaat current setpoint'
-      value_template: "{{ states.climate.thermostaat.attributes.temperature }}"
-    car:
-      entity_id: sensor.garage_door_sensor_38_2
-      friendly_name: 'Car'
-      value_template: >-
-            {%- if states('sensor.garage_door_sensor_38_2') | float < 100 %}
-                parked
-            {% else %}
-                away
-            {%- endif %}
+ platform: template
+ sensors:
+   thermostaat_current_operation:
+     entity_id: climate.thermostaat
+     friendly_name: 'Boiler status'
+     value_template: "{{ states.climate.thermostaat.attributes.operation_mode }}"
+   thermostaat_current_setpoint:
+     entity_id: climate.thermostaat
+     friendly_name: 'Thermostaat setpoint'
+     value_template: "{{ states.climate.thermostaat.attributes.temperature }}"
+     unit_of_measurement: "°C"
+   car:
+     entity_id: sensor.garage_door_sensor_38_2
+     friendly_name: 'Car'
+     value_template: >-
+           {%- if states('sensor.garage_door_sensor_38_2') | float < 100 %}
+               parked
+           {% else %}
+               away
+           {%- endif %}
+   template_woonkamer_trend:
+     entity_id: binary_sensor.woonkamer_temp_stijgend
+     friendly_name: 'Woonkamer trend'
+     value_template: '{% if is_state("binary_sensor.woonkamer_temp_stijgend", "on") %}Stijgend{% elif is_state("binary_sensor.woonkamer_temp_dalend", "on") %}Dalend{% else %}Onbekend{% endif %}'
+
+   template_eetkamer_trend:
+     entity_id: binary_sensor.eetkamer_temp_stijgend
+     friendly_name: 'Eetkamer trend'
+     value_template: '{% if is_state("binary_sensor.eetkamer_temp_stijgend", "on") %}Stijgend{% elif is_state("binary_sensor.eetkamer_temp_dalend", "on") %}Dalend{% else %}Onbekend{% endif %}'
+
 
 binary_sensor:
   - platform: trend
@@ -261,6 +272,15 @@ binary_sensor:
       woonkamer_temp_dalend:
         friendly_name: 'Woonkamer temp dalend'
         entity_id: sensor.netatmo_binnen_temperature
+        sensor_class: cold
+        invert: yes
+      eetkamer_temp_stijgend:
+        friendly_name: 'Eetkamer temp stijgend'
+        entity_id: sensor.netatmo_binnen2_temperature
+        sensor_class: heat
+      eetkamer_temp_dalend:
+        friendly_name: 'Eetkamer temp dalend'
+        entity_id: sensor.netatmo_binnen2_temperature
         sensor_class: cold
         invert: yes
 

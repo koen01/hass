@@ -32,7 +32,6 @@ deuren:
 garden:
   name: Tuin
   entities:
-    - cover.carport
     - light.motionschuur
     - light.Terras
 
@@ -42,9 +41,11 @@ temperatures_central_heating:
     - climate.thermostaat
     - sensor.thermostaat_current_operation
     - sensor.thermostaat_current_setpoint
+    - sensor.template_woonkamer_trend
+    - sensor.template_eetkamer_trend
     #- sensor.zwembad_sensor_6_0
-    - binary_sensor.woonkamer_temp_stijgend
-    - binary_sensor.woonkamer_temp_dalend
+    #- binary_sensor.woonkamer_temp_stijgend
+    #- binary_sensor.woonkamer_temp_dalend
 
 temp_woonkamer:
   name: Woonkamer
@@ -97,7 +98,6 @@ netatmo_status:
 woonkamer_media:
   name: Woonkamer multimedia
   entities:
-    - media_player.kodi
     - switch.computer
 
 irrigation:
@@ -217,6 +217,7 @@ sensebender:
 garage:
   name: garage
   entities:
+    - cover.carport
     - switch.garage_door_sensor_38_1
     - sensor.garage_door_sensor_38_2
     - sensor.car
@@ -239,6 +240,7 @@ default_view:
     - sensor.google_travel_time
     - group.deuren
     - group.garden
+    - group.garage
 
 temperature:
   view: yes
@@ -249,6 +251,7 @@ temperature:
     - group.temp_eetkamer
     - group.temp_slaapkamers
     - group.temperatures_central_heating
+    - group.floor_heating
   # - group.netatmo_min_max
 
 cameras:
@@ -263,20 +266,17 @@ plants:
   view: yes
   entities:
     - group.planten
+    - group.irrigation
 
 mysensors:
   name: mysensors
   view: yes
   entities:
     - group.mysensors_gateway
-    - group.floor_heating
-    - group.irrigation
     - group.chickencoop
     - group.sensebender
     - switch.test_33_1
     - switch.test_33_2
-    - group.watermeter
-    - group.garage
 
 climate:
   view: yes
@@ -284,17 +284,24 @@ climate:
   entities:
     - group.weather
 
+smart_meter:
+  view: yes
+  name: Smart meter
+  entities:
+    - group.p1
+    - group.watermeter
+
 status:
   name: Status
   view: yes
   entities:
-    - group.p1
     - group.pihole
     - group.speedtest
     - group.netatmo_status
     - group.transmission
     - group.nas
     - group.systemmonitor
+    - media_player.kodi
 
 notify:
   name: Notify
