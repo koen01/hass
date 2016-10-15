@@ -1,0 +1,12 @@
+alias: MySensors MQTT Gateway states
+trigger:
+  platform: state
+  entity_id: switch.mqtt_gateway
+  state: 'off'
+action:
+  service: notify.telegram_koen
+  data_template:
+    title: ''
+    message: >
+        MySensors MQTT Gateway just changed from {{ trigger.from_state.state }}
+        to {{ trigger.to_state.state }}
