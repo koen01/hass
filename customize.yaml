@@ -65,7 +65,7 @@
      device_tracker.nina:
        friendly_name: 'Nina'
        icon: mdi:human-female
-     device_tracker.d74e578653984db1b1350a477c3c393e:
+     device_tracker.b5c9f20c7160468095576b1835b800c0:
        friendly_name: 'Koen'
        icon: mdi:human-male
      device_tracker.macbookprovankoen:

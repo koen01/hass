@@ -117,6 +117,7 @@ p1:
   entities:
     - sensor.p1_actual_usage
     - sensor.p1_gas_usage
+    - script.mindergas
 
 floor_heating:
   name: 'Underfloor heating'
@@ -143,11 +144,9 @@ watermeter:
 
 weather:
   entities:
-    - sensor.weather_cloud_coverage
-    - sensor.weather_pressure
-    - sensor.weather_precip
-    - sensor.weather_precip_intensity
-    - sensor.weather_precip_probability
+    - sensor.buienradar_totalrain
+    - sensor.buienradar_average
+    - sensor.buienradar
     - camera.neerslag_radar
     - camera.huidig
     - camera.verwachting
@@ -206,6 +205,7 @@ mysensors_gateway:
   name: mysensors gateway
   entities:
     - switch.mysensors_gateway
+    - switch.mqtt_gateway
 
 sensebender:
   name: sensebender
@@ -218,8 +218,8 @@ garage:
   name: garage
   entities:
     - cover.carport
-    - switch.garage_door_sensor_38_1
-    - sensor.garage_door_sensor_38_2
+    - switch.garage_door_sensor_39_1
+    - sensor.garage_door_sensor_39_2
     - sensor.car
 
 ########################################################################
@@ -230,7 +230,7 @@ default_view:
   view: yes
   entities:
     - binary_sensor.motion_sensor_0_100
-    - device_tracker.d74e578653984db1b1350a477c3c393e
+    - device_tracker.b5c9f20c7160468095576b1835b800c0
     - device_tracker.nina
     - group.woonkamer_lights
     - group.woonkamer_media
@@ -282,6 +282,7 @@ climate:
   view: yes
   name: Weather
   entities:
+    - sensor.buienradar
     - group.weather
 
 smart_meter:

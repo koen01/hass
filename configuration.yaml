@@ -46,6 +46,11 @@ netatmo:
   username: !secret netatmo_username
   password: !secret netatmo_password
 
+# sensor smartmeter:
+#   platform: smartmeter
+#   port: /dev/ttyUSB-P1
+#   baudrate: 115200
+
 zone:
   name: Work
   latitude: !secret work_latitude
@@ -63,10 +68,9 @@ climate:
   platform: netatmo
 
 logger:
-  default: info
+  default: debug
   logs:
-    homeassistant.components.mysensors: critical
-    homeassistant.components.rfxrtx: critical
+    homeassistant.components.mysensors: info
 
 history:
 recorder:
@@ -179,6 +183,27 @@ sensor 9:
   name: "P1 Gas usage"
   qos: 0
   unit_of_measurement: "m3"
+
+sensor buienradar:
+  platform: buienradar
+  name: "Buienradar"
+  timeframe: 3600
+
+sensor buienradar_average:
+  platform: mqtt
+  state_topic: "buienradar/prediction"
+  name: "buienradar average"
+  qos: 0
+  unit_of_measurement: "mm"
+  value_template: '{{ value_json.averagerain }}'
+
+sensor buienradar_total:
+  platform: mqtt
+  state_topic: "buienradar/prediction"
+  name: "buienradar totalrain"
+  qos: 0
+  unit_of_measurement: "mm"
+  value_template: '{{ value_json.totalrain }}'
 
 sensor plant 1:
  platform: miflora
@@ -325,12 +350,17 @@ rfxtrx:
 
 mysensors:
   gateways:
-    - device: '10.0.1.16'
-      persistence_file: '/home/hass/.homeassistant/mysensors.json'
-      tcp_port: 5003
+    # - device: '10.0.1.16'
+    #   persistence_file: '/home/hass/.homeassistant/mysensors.json'
+    #   tcp_port: 5003
+    - device: mqtt
+      persistence_file: '/home/hass/.homeassistant/mysensors_mqtt.json'
+      topic_in_prefix: 'mygateway1-out'
+      topic_out_prefix: 'mygateway1-in'
   debug: True
   persistence: True
-  version: '1.5'
+  version: '2.0'
+  retain: true
   optimistic: false
 
 media_player:
@@ -343,22 +373,22 @@ media_player:
   turn_off_action: shutdown
 
 
-light:
- platform: limitlessled
- bridges:
-   - host: 10.0.1.22
-     version: 5
-     port: 8899
-     groups:
-     - number: 1
-       type: rgbw
-       name: TV Hoek
-     - number: 3
-       type: rgbw
-       name: Leeslamp
-     - number: 4
-       type: rgbw
-       name: Achterkamer
+# light:
+#  platform: limitlessled
+#  bridges:
+#    - host: 10.0.1.22
+#      version: 5
+#      port: 8899
+#      groups:
+#      - number: 1
+#        type: rgbw
+#        name: TV Hoek
+#      - number: 3
+#        type: rgbw
+#        name: Leeslamp
+#      - number: 4
+#        type: rgbw
+#        name: Achterkamer
 
 light 2:
   platform: rfxtrx
@@ -371,11 +401,17 @@ light 2:
     0b11002f00b4c65e0a010f50:
         name: Motion/Schuur
 
-switch:
+switch computer:
   platform: wake_on_lan
   mac_address: "8C:89:A5:C1:6D:8A"
   name: "Computer"
   host: "10.0.1.19"
+
+switch mqtt:
+  platform: wake_on_lan
+  mac_address: "5C:CF:7F:28:7A:88"
+  name: "MQTT Gateway"
+  host: "10.0.1.17"
 
 switch gateway:
   platform: wake_on_lan
@@ -448,6 +484,7 @@ shell_command:
   camera_preset_2: !secret camera_preset_2
   camera_preset_3: !secret camera_preset_3
   camera_preset_4: !secret camera_preset_4
+  mindergas: /home/hass/.homeassistant/mindergas.py
 
 scene:
   - name: 'Woonkamer normaal'
@@ -492,3 +529,9 @@ scene 4:
         state: on
         brightness: 140
         rgb_color: [255, 255, 255]
+
+script:
+  mindergas:
+    alias: Upload gas usage
+    sequence:
+      - service: shell_command.mindergas

@@ -49,6 +49,10 @@ _SETTEMP_REQ = _BASE_URL + "api/setthermpoint"
 _GETTHERMOSTATDATA_REQ	= _BASE_URL + "api/getthermostatsdata"
 
 
+class NoDevice( Exception ):
+    pass
+
+
 class ClientAuth:
     """
     Request authentication and keep access token available through token method. Renew it automatically if necessary
@@ -62,6 +66,8 @@ class ClientAuth:
             read_station: to retrieve weather station data (Getstationsdata, Getmeasure)
             read_camera: to retrieve Welcome data (Gethomedata, Getcamerapicture)
             access_camera: to access the camera, the videos and the live stream.
+            read_thermostat: to retrieve thermostat data ( Getmeasure, Getthermostatsdata)
+            write_thermostat: to set up the thermostat (Syncschedule, Setthermpoint)
             Several value can be used at the same time, ie: 'read_station read_camera'
     """
 
@@ -69,7 +75,7 @@ class ClientAuth:
                        clientSecret=_CLIENT_SECRET,
                        username=_USERNAME,
                        password=_PASSWORD,
-                       scope="read_station read_thermostat write_thermostat"):
+                       scope="read_station"):
         postParams = {
                 "grant_type" : "password",
                 "client_id" : clientId,
@@ -106,6 +112,7 @@ class ClientAuth:
 class User:
     """
     This class returns basic information about the user
+
     Args:
         authData (ClientAuth): Authentication information with a working access Token
     """
@@ -121,6 +128,7 @@ class User:
 class WeatherStationData:
     """
     List the Weather Station devices (stations and modules)
+
     Args:
         authData (ClientAuth): Authentication information with a working access Token
     """
@@ -131,16 +139,22 @@ class WeatherStationData:
                 }
         resp = postRequest(_GETSTATIONDATA_REQ, postParams)
         self.rawData = resp['body']['devices']
+        if not self.rawData : raise NoDevice("No weather station available")
         self.stations = { d['_id'] : d for d in self.rawData }
         self.modules = dict()
         for i in range(len(self.rawData)):
             for m in self.rawData[i]['modules']:
                 self.modules[ m['_id'] ] = m
+                self.modules[ m['_id'] ][ 'main_device' ] = self.rawData[i]['_id']
         self.default_station = list(self.stations.values())[0]['station_name']
 
     def modulesNamesList(self, station=None):
         res = [m['module_name'] for m in self.modules.values()]
-        res.append(self.stationByName(station)['module_name'])
+        if station:
+            res.append(self.stationByName(station)['module_name'])
+        else:
+            for id,station in self.stations.items():
+                res.append(station['module_name'])
         return res
 
     def stationByName(self, station=None):
@@ -158,6 +172,12 @@ class WeatherStationData:
         if station :
             s = self.stationByName(station)
             if not s : return None
+            elif s['module_name'] == module:
+                return s
+        else:
+            for id, station in self.stations.items():
+                if station['module_name'] == module:
+                    return station
         for m in self.modules:
             mod = self.modules[m]
             if mod['module_name'] == module :
@@ -173,6 +193,13 @@ class WeatherStationData:
                         return module
             else:
                 return self.modules[mid]
+
+    def monitoredConditions(self, module):
+        mod = self.moduleByName(module)
+        conditions = []
+        for cond in mod['data_type']:
+            conditions.append(cond.lower())
+        return conditions
 
     def lastData(self, station=None, exclude=0):
         s = self.stationByName(station)
@@ -271,6 +298,7 @@ class DeviceList(WeatherStationData):
 class WelcomeData:
     """
     List the Netatmo Welcome cameras informations (Homes, cameras, events, persons)
+
     Args:
         authData (ClientAuth): Authentication information with a working access Token
     """
@@ -282,6 +310,7 @@ class WelcomeData:
         resp = postRequest(_GETHOMEDATA_REQ, postParams)
         self.rawData = resp['body']
         self.homes = { d['id'] : d for d in self.rawData['homes'] }
+        if not self.homes : raise NoDevice("No camera available")
         self.persons = dict()
         self.events = dict()
         self.cameras = dict()
@@ -502,8 +531,9 @@ class ThermostatData:
                 }
         resp = postRequest(_GETTHERMOSTATDATA_REQ, postParams)
 
-        self.rawData2 = resp['body']
-        self.devList = self.rawData2['devices']
+        self.rawData = resp['body']
+        self.devList = self.rawData['devices']
+        if not self.devList : raise NoDevice("No thermostat available")
         self.devId = self.devList[0]['_id']
         self.modList = self.devList[0]['modules']
         self.modId = self.modList[0]['_id']
@@ -511,40 +541,55 @@ class ThermostatData:
         self.setpoint_temp = self.modList[0]['measured']['setpoint_temp']
         self.setpoint_mode = self.modList[0]['setpoint']['setpoint_mode']
         self.relay_cmd = int(self.modList[0]['therm_relay_cmd'])
-        self.devices = { d['_id'] : d for d in self.rawData2['devices'] }
+        self.devices = { d['_id'] : d for d in self.rawData['devices'] }
         self.modules = dict()
         self.therm_program_list = dict()
-        for i in range(len(self.rawData2['devices'])):
-            nameDevice=self.rawData2['devices'][i]['station_name']
+        self.zones = dict()
+        self.timetable = dict()
+        for i in range(len(self.rawData['devices'])):
+            nameDevice=self.rawData['devices'][i]['station_name']
             if nameDevice not in self.modules:
                 self.modules[nameDevice]=dict()
-            for c in self.rawData2['devices'][i]['modules']:
-                self.modules[nameDevice][ c['_id'] ] = c
-        self.default_device2 = list(self.devices.values())[0]['station_name']
+            for m in self.rawData['devices'][i]['modules']:
+                self.modules[nameDevice][ m['_id'] ] = m
+            for p in self.rawData['devices'][i]['modules'][0]['therm_program_list']:
+                self.therm_program_list[p['program_id']] = p
+            for z in self.rawData['devices'][i]['modules'][0]['therm_program_list'][0]['zones']:
+                self.zones[z['id']] = z
+            for o in self.rawData['devices'][i]['modules'][0]['therm_program_list'][0]['timetable']:
+                self.timetable[o['m_offset']] = o
+        self.default_device = list(self.devices.values())[0]['station_name']
 
-        self.default_module = list(self.modules[self.default_device2].values())[0]['module_name']
-        # print (self.default_module)
-        # print ("modules", self.modules)
-        # print ("devices", self.devices)
-        print (self.temp)
-        print (self.setpoint_temp)
-        print (self.setpoint_mode)
-        print (self.relay_cmd)
+        self.default_module = list(self.modules[self.default_device].values())[0]['module_name']
 
-    # @property
-    # def temp(self):
-    #     # return self.modList[0]['measured']['temperature']
-    #     return self._temp
-
-    # @property
-    # def setpoint_temp(self):
-    #     return self.modList[0]['measured']['setpoint_temp']
+    def lastData(self, device=None, exclude=0):
+        s = self.deviceByName(device)
+        if not s : return None
+        lastD = dict()
+        zones = dict()
+        # Define oldest acceptable sensor measure event
+        limit = (time.time() - exclude) if exclude else 0
+        dm = s['modules'][0]['measured']
+        ds = s['modules'][0]['setpoint']['setpoint_mode']
+        dz = s['modules'][0]['therm_program_list'][0]['zones']
+        for module in s['modules']:
+            dm = module['measured']
+            ds = module['setpoint']['setpoint_mode']
+            dz = module['therm_program_list'][0]['zones']
+            if dm['time'] > limit :
+                lastD[module['module_name']] = dm.copy()                # lastD['setpoint_mode'] = ds
+                lastD[module['module_name']]['setpoint_mode'] = ds
+                # For potential use, add battery and radio coverage information to module data if present
+                for i in ('battery_vp', 'rf_status', 'therm_relay_cmd', 'battery_percent') :
+                    if i in module : lastD[module['module_name']][i] = module[i]
+                zones[module['module_name']] = dz.copy()
+        return lastD
 
     def deviceById(self, did):
         return None if did not in self.devices else self.devices[did]
 
     def deviceByName(self, device):
-        if not device: device = self.default_device2
+        if not device: device = self.default_device
         for key,value in self.devices.items():
             if value['station_name'] == device:
                 return self.devices[key]
@@ -573,24 +618,15 @@ class ThermostatData:
             return list(self.modules[device].values())[0]
         return None
 
-    def setthermpoint(self, mode, temp):
+    def setthermpoint(self, mode, temp, endTimeOffset):
         postParams = {"access_token": self.getAuthToken}
         postParams['device_id'] = self.devId
         postParams['module_id'] = self.modId
         postParams['setpoint_mode'] = mode
-        if temp:
+        if mode == "manual":
+            postParams['setpoint_endtime'] = time.time() + endTimeOffset
             postParams['setpoint_temp'] = temp
-
-        resp = postRequest(_SETTEMP_REQ, postParams)
-
-    def update(self, authData):
-        self.getAuthToken = authData.accessToken
-        postParams = {
-                "access_token" : self.getAuthToken
-                }
-        resp = postRequest(_GETTHERMOSTATDATA_REQ, postParams)
-
-        self.rawData2 = resp['body']
+        return postRequest(_SETTEMP_REQ, postParams)
 
 # Utilities routines
 
@@ -655,12 +691,29 @@ if __name__ == "__main__":
            stderr.write("Library source missing identification arguments to check lnetatmo.py (user/password/etc...)")
            exit(1)
 
-    authorization = ClientAuth(scope="read_station read_camera access_camera read_thermostat write_thermostat")                # Test authentication method
-    devList = DeviceList(authorization)         # Test DEVICELIST
-    devList.MinMaxTH()                          # Test GETMEASUR
+    authorization = ClientAuth(scope="read_station read_camera access_camera read_thermostat write_thermostat")  # Test authentication method
 
-    Camera = WelcomeData(authorization)
-    Thermostat = ThermostatData(authorization)
+    try:
+        devList = DeviceList(authorization)         # Test DEVICELIST
+    except NoDevice:
+        if stdout.isatty():
+            print("lnetatmo.py : warning, no weather station available for testing")
+    else:
+        devList.MinMaxTH()                          # Test GETMEASUR
+
+
+    try:
+        Camera = WelcomeData(authorization)
+    except NoDevice :
+        if stdout.isatty():
+            print("lnetatmo.py : warning, no camera available for testing")
+
+    try:
+        Thermostat = ThermostatData(authorization)
+    except NoDevice :
+        if stdout.isatty():
+            print("lnetatmo.py : warning, no thermostat available for testing")
+
     # If we reach this line, all is OK
 
     # If launched interactively, display OK message

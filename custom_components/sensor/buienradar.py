@@ -1,4 +1,3 @@
-from homeassistant.components.sensor import PLATFORM_SCHEMA
 from homeassistant.helpers.entity import Entity
 from homeassistant.const import (CONF_NAME)
 import logging
