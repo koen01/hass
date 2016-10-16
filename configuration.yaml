@@ -26,6 +26,9 @@ influxdb:
  database: home_assistant
  username: !secret influx_user
  password: !secret influx_password
+ blacklist:
+   - sensor.pihole
+   - sun.sun
 
 #device_tracker:
 #  platform: owntracks
@@ -68,13 +71,11 @@ climate:
   platform: netatmo
 
 logger:
-  default: debug
-  logs:
-    homeassistant.components.mysensors: info
+  default: warn
 
 history:
 recorder:
-  purge_days: 14
+  purge_days: 7
 
 sun:
 frontend:
@@ -172,7 +173,7 @@ sensor 7:
 sensor 8:
  platform: mqtt
  state_topic: "events/p1/1-0:21.7.0"
- name: "P1 Actual usage"
+ name: "P1 actual energy usage"
  qos: 0
  unit_of_measurement: "W"
  value_template: '{{ value | multiply(1000) }}'
@@ -180,30 +181,38 @@ sensor 8:
 sensor 9:
   platform: mqtt
   state_topic: "events/p1/0-1:24.2.1"
-  name: "P1 Gas usage"
+  name: "P1 total gas usage"
   qos: 0
   unit_of_measurement: "m3"
+
+sensor 10:
+ platform: mqtt
+ state_topic: "events/p1/1-0:1.8.1"
+ name: "P1 total low kwh rate"
+ qos: 0
+ unit_of_measurement: "W"
+ value_template: '{{ value }}'
+
+sensor 11:
+ platform: mqtt
+ state_topic: "events/p1/1-0:1.8.2"
+ name: "P1 total normal kwh rate"
+ qos: 0
+ unit_of_measurement: "W"
+ value_template: '{{ value }}'
+
+sensor 12:
+ platform: mqtt
+ state_topic: "events/p1/0-0:96.14.0"
+ name: "P1 current rate"
+ qos: 0
+ unit_of_measurement: "rate"
+ value_template: '{{ value }}'
 
 sensor buienradar:
   platform: buienradar
   name: "Buienradar"
   timeframe: 3600
-
-sensor buienradar_average:
-  platform: mqtt
-  state_topic: "buienradar/prediction"
-  name: "buienradar average"
-  qos: 0
-  unit_of_measurement: "mm"
-  value_template: '{{ value_json.averagerain }}'
-
-sensor buienradar_total:
-  platform: mqtt
-  state_topic: "buienradar/prediction"
-  name: "buienradar totalrain"
-  qos: 0
-  unit_of_measurement: "mm"
-  value_template: '{{ value_json.totalrain }}'
 
 sensor plant 1:
  platform: miflora
@@ -224,6 +233,7 @@ sensor plant 2:
  monitored_conditions:
   - moisture
   - light
+  - temperature
   - conductivity
 
 sensor netatmo:
@@ -268,10 +278,10 @@ sensor template:
      value_template: "{{ states.climate.thermostaat.attributes.temperature }}"
      unit_of_measurement: "°C"
    car:
-     entity_id: sensor.garage_door_sensor_38_2
+     entity_id: sensor.garage_door_sensor_39_2
      friendly_name: 'Car'
      value_template: >-
-           {%- if states('sensor.garage_door_sensor_38_2') | float < 100 %}
+           {%- if states('sensor.garage_door_sensor_39_2') | float < 100 %}
                parked
            {% else %}
                away
@@ -350,13 +360,13 @@ rfxtrx:
 
 mysensors:
   gateways:
-    # - device: '10.0.1.16'
-    #   persistence_file: '/home/hass/.homeassistant/mysensors.json'
-    #   tcp_port: 5003
-    - device: mqtt
-      persistence_file: '/home/hass/.homeassistant/mysensors_mqtt.json'
-      topic_in_prefix: 'mygateway1-out'
-      topic_out_prefix: 'mygateway1-in'
+    - device: '10.0.1.17'
+      persistence_file: '/home/hass/.homeassistant/mysensors.json'
+      tcp_port: 5003
+    # - device: mqtt
+    #   persistence_file: '/home/hass/.homeassistant/mysensors_mqtt.json'
+    #   topic_in_prefix: 'mygateway1-out'
+    #   topic_out_prefix: 'mygateway1-in'
   debug: True
   persistence: True
   version: '2.0'
@@ -373,22 +383,22 @@ media_player:
   turn_off_action: shutdown
 
 
-# light:
-#  platform: limitlessled
-#  bridges:
-#    - host: 10.0.1.22
-#      version: 5
-#      port: 8899
-#      groups:
-#      - number: 1
-#        type: rgbw
-#        name: TV Hoek
-#      - number: 3
-#        type: rgbw
-#        name: Leeslamp
-#      - number: 4
-#        type: rgbw
-#        name: Achterkamer
+light:
+ platform: limitlessled
+ bridges:
+   - host: 10.0.1.22
+     version: 5
+     port: 8899
+     groups:
+     - number: 1
+       type: rgbw
+       name: TV Hoek
+     - number: 3
+       type: rgbw
+       name: Leeslamp
+     - number: 4
+       type: rgbw
+       name: Achterkamer
 
 light 2:
   platform: rfxtrx

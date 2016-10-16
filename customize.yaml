@@ -116,8 +116,6 @@
      switch.temperature_sensor_1_100:
        friendly_name: 'Backlight'
        icon: mdi:monitor
-     binary_sensor.motion_sensor_0_100:
-       friendly_name: 'Motion sensor'
      sensor.thermostaat_current_operation:
        friendly_name: 'Verwarming status'
        icon: mdi:fire
@@ -134,3 +132,13 @@
        friendly_name : 'Parking sensor'
        icon: mdi:parking
        unit_of_measurement: "cm"
+     sensor.buienradar:
+       icon: mdi:weather-pouring
+     sensor.p1_actual_energy_usage:
+       icon: mdi:power-plug
+     sensor.p1_current_rate:
+       icon: mdi:power-plug
+     sensor.p1_total_low_kwh_rate:
+       icon: mdi:power-plug
+     sensor.p1_total_normal_kwh_rate:
+       icon: mdi:power-plug
