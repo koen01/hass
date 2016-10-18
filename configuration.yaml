@@ -212,7 +212,7 @@ sensor 12:
 sensor buienradar:
   platform: buienradar
   name: "Buienradar"
-  timeframe: 3600
+  timeframe: 600
 
 sensor plant 1:
  platform: miflora
