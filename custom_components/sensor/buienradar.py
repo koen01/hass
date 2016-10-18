@@ -6,7 +6,7 @@ from datetime import timedelta
 from homeassistant.util import Throttle
 
 REQUIREMENTS = [
-    'https://github.com/koen01/pybuienradar/archive/v0.4.zip#pybuienradar==0.4']
+    'https://github.com/koen01/pybuienradar/archive/v0.5.zip#pybuienradar==0.5']
 
 MIN_TIME_BETWEEN_UPDATES = timedelta(minutes=5)
 ATTR_TOTAL = 'Total'
@@ -58,8 +58,8 @@ class BuienradarSensor(Entity):
         """Return the state attributes."""
         if self.data is not None:
             return {
-                ATTR_TOTAL: round(10**((self.data['totalrain'] - 109)/32),2),
-                ATTR_AVERAGE: round(10**((self.data['averagerain'] - 109)/32),2),
+                ATTR_TOTAL: self.data['totalrain'] ,
+                ATTR_AVERAGE: self.data['averagerain'],
                 ATTR_TIMEFRAME: self.data['timeframe'],
                 ATTR_UPDATED: self.data['time']
             }
@@ -69,4 +69,4 @@ class BuienradarSensor(Entity):
         """Get the latest data and updates the state."""
         now = time.strftime("%H:%M")
         self.data = self._buienradar.get_forecast(now, self._timeframe)
-        self._state = round(10**((self.data["averagerain"] - 109)/32),2)
+        self._state = self.data["averagerain"]
