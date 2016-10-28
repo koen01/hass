@@ -44,11 +44,11 @@
      sensor.chickencoop_l298n_3_4:
        friendly_name: 'Kippenhok Temp'
      sensor.temperature_sensor_1_0:
-       friendly_name: 'Vloerverwarming in'
+       friendly_name: 'CV Retour'
      sensor.temperature_sensor_1_1:
-       friendly_name: 'Vloerverwarming uit'
+       friendly_name: 'CV uit'
      sensor.temperature_sensor_1_3:
-       friendly_name: 'Lichtlevel bijkeuken'
+       friendly_name: 'Lichtlevel zolder'
      switch.achterdeur:
        icon: mdi:lock
        assumed_state: false
@@ -106,9 +106,9 @@
      sensor.zwembad_sensor_6_0:
        friendly_name: 'Zwembad Temp'
        icon: mdi:swim
-     sensor.sensor_3:
+     sensor.sensor_2:
        friendly_name: 'Slaapkamer'
-     sensor.sensor_3_2:
+     sensor.sensor_2_2:
        friendly_name: 'Slaapkamer RH'
        icon: mdi:water-percent
      switch.mysensors_gateway:

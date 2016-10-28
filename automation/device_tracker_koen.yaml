@@ -7,4 +7,4 @@ action:
   service: notify.telegram_koen
   data:
     title: ''
-    message: Koen just changed to {{ states('device_tracker.b5c9f20c7160468095576b1835b800c0') }}
+    message: Koen just changed to {{ states('device_tracker.b5c9f20c7160468095576b1835b800c0') }} {{ now() }}

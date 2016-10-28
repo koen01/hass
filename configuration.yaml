@@ -30,10 +30,6 @@ influxdb:
    - sensor.pihole
    - sun.sun
 
-#device_tracker:
-#  platform: owntracks
-#  max_gps_accuracy: 200
-
 device_tracker:
   platform: locative
 
@@ -54,6 +50,25 @@ netatmo:
 #   port: /dev/ttyUSB-P1
 #   baudrate: 115200
 
+sensor darksky:
+  - platform: darksky
+    api_key: 58b5d8e1828c0aeab35579fd995c2148
+    monitored_conditions:
+      - summary
+      - icon
+      - nearest_storm_distance
+      - nearest_storm_bearing
+      - precip_type
+      - precip_intensity
+      - precip_probability
+      - apparent_temperature
+      - cloud_cover
+      - ozone
+      - minutely_summary
+      - hourly_summary
+      - daily_summary
+      - precip_intensity_max
+
 zone:
   name: Work
   latitude: !secret work_latitude
@@ -67,18 +82,16 @@ notify telegram:
   api_key: !secret telegram_api_key
   chat_id: !secret telegram_chat_id
 
-climate:
-  platform: netatmo
-
 logger:
   default: warn
 
-history:
 recorder:
   purge_days: 7
+  db_url: mysql://homeassistant:homeassistant@10.0.1.13:3306/homeassistant
 
 sun:
 frontend:
+history:
 updater:
 logbook:
 
@@ -108,7 +121,7 @@ sensor 4:
       data_type:
        - Temperature
        - Humidity
-    0a520d19310300e03c0169:
+    0a520d1a120300be3c0169:
       name: Sensor 3
       data_type:
        - Temperature
@@ -138,7 +151,7 @@ sensor 6:
     origin: !secret google_origin
     destination: !secret google_destination
     options:
-     arrival_time: 08:30:00
+     arrival_time: 08:00:00
 
 sensor nas1:
     platform: snmp
@@ -323,30 +336,16 @@ sensor pi-hole:
   - platform: pi_hole
     host: 127.0.0.1
 
-camera:
-  platform: foscam
-  ip: 10.0.1.35
-  name: Schuur
-  port: 88
-  username: !secret foscam_username
-  password: !secret foscam_password
-
-camera 2:
-  platform: generic
-  still_image_url: http://10.0.1.20:99/snapshot.cgi
-  name: Kippenhok
-  username: !secret kippenhok_user
-  password: !secret kippenhok_password
+camera syno:
+  platform: synology
+  url: http://10.0.1.13:5000
+  username: !secret syno_user
+  password: !secret syno_password
 
 camera neerslag:
   platform: generic
   still_image_url: http://cdn.knmi.nl/knmi/map/page/weer/actueel-weer/neerslagradar/WWWRADARTMP_loop.gif
   name: Neerslag radar
-
-camera verwachting:
-  platform: generic
-  still_image_url: http://cdn.knmi.nl/knmi/map/current/weather/forecast/kaart_verwachtingen_Morgen_dag.gif
-  name: Verwachtingen morgen
 
 camera huidig:
   platform: generic
@@ -382,8 +381,7 @@ media_player:
   password: 1234
   turn_off_action: shutdown
 
-
-light:
+light limitlessled:
  platform: limitlessled
  bridges:
    - host: 10.0.1.22
@@ -400,7 +398,7 @@ light:
        type: rgbw
        name: Achterkamer
 
-light 2:
+light rfxtrx:
   platform: rfxtrx
   automatic_add: True
   devices:
@@ -429,7 +427,7 @@ switch gateway:
   name: "Mysensors Gateway"
   host: "10.0.1.16"
 
-switch 2:
+switch rfxtrx:
   platform: rfxtrx
   automatic_add: True
   devices:
@@ -494,7 +492,7 @@ shell_command:
   camera_preset_2: !secret camera_preset_2
   camera_preset_3: !secret camera_preset_3
   camera_preset_4: !secret camera_preset_4
-  mindergas: /home/hass/.homeassistant/mindergas.py
+  mindergas: /home/pi/mindergas/mindergas.py
 
 scene:
   - name: 'Woonkamer normaal'

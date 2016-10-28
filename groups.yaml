@@ -26,8 +26,6 @@ deuren:
   entities:
     - switch.voordeur
     - switch.achterdeur
-   # - binary_sensor.achterdeur
-   # - binary_sensor.voordeur
 
 garden:
   name: Tuin
@@ -44,8 +42,6 @@ temperatures_central_heating:
     - sensor.template_woonkamer_trend
     - sensor.template_eetkamer_trend
     #- sensor.zwembad_sensor_6_0
-    #- binary_sensor.woonkamer_temp_stijgend
-    #- binary_sensor.woonkamer_temp_dalend
 
 temp_woonkamer:
   name: Woonkamer
@@ -65,10 +61,10 @@ temp_eetkamer:
 temp_slaapkamers:
   name: Slaapkamers
   entities:
-    - sensor.sensor_3
+    - sensor.sensor_2
     - sensor.slaapkamer_eva
     - sensor.slaapkamer_eva_2
-    - sensor.sensor_3_2
+    - sensor.sensor_2_2
 
 netatmo_outside:
   name: Buiten
@@ -105,10 +101,7 @@ irrigation:
   entities:
     - input_slider.sprinklertimer
     - input_boolean.sprinkler
-    #- input_boolean.sprinklerdummy
     - sensor.irrigation_controller_7_0
-    #- sensor.irrigation_controller_7_99
-    #- sensor.irrigation_controller_7_99_2
     - switch.irrigation_controller_7_1
     - switch.irrigation_controller_7_2
 
@@ -123,7 +116,7 @@ p1:
     - script.mindergas
 
 floor_heating:
-  name: 'Underfloor heating'
+  name: 'Central heating'
   entities:
     - sensor.temperature_sensor_1_0
     - sensor.temperature_sensor_1_1
@@ -142,17 +135,28 @@ chickencoop:
 watermeter:
   name: 'Watermeter'
   entities:
-  #  - sensor.water_meter_35_1
-  #  - sensor.water_meter_35_1_2
+    - sensor.water_meter_35_1
+    - sensor.water_meter_35_1_2
 
 weather:
   entities:
-    - sensor.buienradar_totalrain
-    - sensor.buienradar_average
     - sensor.buienradar
+    - sensor.dark_sky_apparent_temperature
+    - sensor.dark_sky_cloud_coverage
+    - sensor.dark_sky_daily_max_precip_intensity
+    - sensor.dark_sky_daily_summary
+    - sensor.dark_sky_hourly_summary
+    - sensor.dark_sky_icon
+    - sensor.dark_sky_minutely_summary
+    - sensor.dark_sky_nearest_storm_bearing
+    - sensor.dark_sky_nearest_storm_distance
+    - sensor.dark_sky_ozone
+    - sensor.dark_sky_precip
+    - sensor.dark_sky_precip_intensity
+    - sensor.dark_sky_precip_probability
+    - sensor.dark_sky_summary
     - camera.neerslag_radar
     - camera.huidig
-    - camera.verwachting
 
 speedtest:
   name: Speedtest
@@ -232,6 +236,7 @@ garage:
 default_view:
   view: yes
   entities:
+    - sensor.buienradar
     - device_tracker.b5c9f20c7160468095576b1835b800c0
     - device_tracker.nina
     - group.woonkamer_lights
@@ -254,14 +259,13 @@ temperature:
     - group.temp_slaapkamers
     - group.temperatures_central_heating
     - group.floor_heating
-  # - group.netatmo_min_max
 
 cameras:
   view: yes
   entities:
     - camera.schuur
+    - camera.pantilt
     - input_select.camera_presets
-    - camera.kippenhok
 
 plants:
   name: Plants
@@ -274,6 +278,8 @@ mysensors:
   name: mysensors
   view: yes
   entities:
+    - binary_sensor.molgan_sensor_41_1
+    - switch.molgan_sensor_41_2
     - group.mysensors_gateway
     - group.chickencoop
     - group.sensebender
