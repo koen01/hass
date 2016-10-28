@@ -1,0 +1,8 @@
+alias: Molgan sensor off
+trigger:
+  platform: state
+  entity_id: binary_sensor.molgan_sensor_41_1
+  to: 'off'
+action:
+  service: homeassistant.turn_off
+  entity_id: switch.molgan_sensor_41_2
