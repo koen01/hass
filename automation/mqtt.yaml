@@ -1,9 +1,9 @@
 alias: 'mqtt test'
 trigger:
   platform: state
-  entity_id: climate.thermostaat
+  entity_id: climate.thermostaat,sensor.netatmo_binnen2_co2, sensor.netatmo_binnen_co2, sensor.netatmo_binnen2_temperature, sensor.netatmo_binnen_temperature, sensor.slaapkamer_eva_temperature, sensor.netatmo_buiten_temperature
 action:
   service: mqtt.publish
   data_template:
     topic: "devices/5ccf7fc3b1c6/text/on/set"
-    payload: "{{trigger.entity_id}} : {{ states('climate.thermostaat') }} C"
+    payload: "{{ trigger.to_state.name }} is {{ trigger.to_state.state }} "

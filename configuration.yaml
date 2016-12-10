@@ -11,6 +11,8 @@ homeassistant:
 automation: !include_dir_list automation
 group: !include groups.yaml
 
+ios:
+
 http:
   api_password: !secret http_password
   server_port: 8124
