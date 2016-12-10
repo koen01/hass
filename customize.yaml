@@ -106,11 +106,6 @@
      sensor.zwembad_sensor_6_0:
        friendly_name: 'Zwembad Temp'
        icon: mdi:swim
-     sensor.sensor_2:
-       friendly_name: 'Slaapkamer'
-     sensor.sensor_2_2:
-       friendly_name: 'Slaapkamer RH'
-       icon: mdi:water-percent
      switch.mysensors_gateway:
        icon: mdi:server-network
      switch.temperature_sensor_1_100:
@@ -142,3 +137,7 @@
        icon: mdi:power-plug
      sensor.p1_total_normal_kwh_rate:
        icon: mdi:power-plug
+     cover.carport:
+       homebridge_cover_type: garage_door
+     switch.buitenlamp:
+       icon: mdi:lightbulb

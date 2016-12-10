@@ -6,4 +6,4 @@ trigger:
 action:
   service: homeassistant.turn_off
   entity_id:
-  - light.terras
+  - group.woonkamer_lights

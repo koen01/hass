@@ -14,12 +14,20 @@ group: !include groups.yaml
 http:
   api_password: !secret http_password
   server_port: 8124
+  ssl_certificate: /etc/letsencrypt/live/koen01.synology.me/fullchain.pem
+  ssl_key: /etc/letsencrypt/live/koen01.synology.me/privkey.pem
 
 mqtt:
   broker: 10.0.1.59
   port: 1883
   username: !secret mqtt_username
   password: !secret mqtt_password
+
+mqtt_export:
+  publish_topic: "home/states"
+
+alarm_control_panel:
+  platform: manual
 
 influxdb:
  host: 127.0.0.1
@@ -29,6 +37,9 @@ influxdb:
  blacklist:
    - sensor.pihole
    - sun.sun
+   - group.all_switches
+   - group.garage
+   - sensor.google_travel_time
 
 device_tracker:
   platform: locative
@@ -44,11 +55,6 @@ netatmo:
   secret_key: !secret netatmo_secret_key
   username: !secret netatmo_username
   password: !secret netatmo_password
-
-# sensor smartmeter:
-#   platform: smartmeter
-#   port: /dev/ttyUSB-P1
-#   baudrate: 115200
 
 sensor darksky:
   - platform: darksky
@@ -83,7 +89,9 @@ notify telegram:
   chat_id: !secret telegram_chat_id
 
 logger:
-  default: warn
+  default: info
+  logs:
+    mysensors.mysensors: debug
 
 recorder:
   purge_days: 7
@@ -116,13 +124,13 @@ sensor 4:
       data_type:
        - Temperature
        - Humidity
-    0a520d179d0200e63d0179:
-      name: Sensor 2
+    0a520d743b0200d2350179:
+      name: Slaapkamer
       data_type:
        - Temperature
        - Humidity
-    0a520d1a120300be3c0169:
-      name: Sensor 3
+    0a520d6b2103008d380179:
+      name: Inkom
       data_type:
        - Temperature
        - Humidity
@@ -222,6 +230,11 @@ sensor 12:
  unit_of_measurement: "rate"
  value_template: '{{ value }}'
 
+# sensor:
+#   - platform: dsmr
+#     port: /dev/ttyUSB-P1
+#     dsmr_version: 4
+
 sensor buienradar:
   platform: buienradar
   name: "Buienradar"
@@ -309,7 +322,6 @@ sensor template:
      friendly_name: 'Eetkamer trend'
      value_template: '{% if is_state("binary_sensor.eetkamer_temp_stijgend", "on") %}Stijgend{% elif is_state("binary_sensor.eetkamer_temp_dalend", "on") %}Dalend{% else %}Onbekend{% endif %}'
 
-
 binary_sensor:
   - platform: trend
     sensors:
@@ -336,11 +348,20 @@ sensor pi-hole:
   - platform: pi_hole
     host: 127.0.0.1
 
-camera syno:
-  platform: synology
-  url: http://10.0.1.13:5000
-  username: !secret syno_user
-  password: !secret syno_password
+camera:
+  platform: foscam
+  ip: 10.0.1.35
+  name: Schuur
+  port: 88
+  username: !secret foscam_username
+  password: !secret foscam_password
+
+camera 2:
+  platform: mjpeg
+  mjpeg_url: http://10.0.1.20:99/snapshot.cgi
+  name: Kippenhok
+  username: !secret kippenhok_user
+  password: !secret kippenhok_password
 
 camera neerslag:
   platform: generic
@@ -359,13 +380,13 @@ rfxtrx:
 
 mysensors:
   gateways:
-    - device: '10.0.1.17'
-      persistence_file: '/home/hass/.homeassistant/mysensors.json'
-      tcp_port: 5003
-    # - device: mqtt
-    #   persistence_file: '/home/hass/.homeassistant/mysensors_mqtt.json'
-    #   topic_in_prefix: 'mygateway1-out'
-    #   topic_out_prefix: 'mygateway1-in'
+    # - device: '10.0.1.17'
+    #   persistence_file: '/home/hass/.homeassistant/mysensors.json'
+    #   tcp_port: 5003
+    - device: mqtt
+      persistence_file: '/home/hass/.homeassistant/mysensors_mqtt.json'
+      topic_in_prefix: 'mygateway1-out'
+      topic_out_prefix: 'mygateway1-in'
   debug: True
   persistence: True
   version: '2.0'
@@ -382,21 +403,21 @@ media_player:
   turn_off_action: shutdown
 
 light limitlessled:
- platform: limitlessled
- bridges:
-   - host: 10.0.1.22
-     version: 5
-     port: 8899
-     groups:
-     - number: 1
-       type: rgbw
-       name: TV Hoek
-     - number: 3
-       type: rgbw
-       name: Leeslamp
-     - number: 4
-       type: rgbw
-       name: Achterkamer
+  platform: limitlessled
+  bridges:
+    - host: 10.0.1.22
+      version: 5
+      port: 8899
+      groups:
+      - number: 1
+        type: rgbw
+        name: TV Hoek
+      - number: 3
+        type: rgbw
+        name: Leeslamp
+      - number: 4
+        type: rgbw
+        name: Achterkamer
 
 light rfxtrx:
   platform: rfxtrx
@@ -450,6 +471,19 @@ switch rfxtrx:
     08200330df47000650:
       name: brandmelder bijkeuken
       fire_event: True
+    0b11000287bc0cfe09010f70:
+      name: Buitenlamp
+
+switch homie:
+  - platform: mqtt
+    name: "Homie mqtt switch"
+    state_topic: "devices/c3b1c6e0/light/on"
+    command_topic: "devices/c3b1c6e0/light/on/set"
+    payload_on: "true"
+    payload_off: "false"
+    optimistic: false
+    qos: 0
+    retain: true
 
 cover:
   platform: rfxtrx
@@ -492,7 +526,7 @@ shell_command:
   camera_preset_2: !secret camera_preset_2
   camera_preset_3: !secret camera_preset_3
   camera_preset_4: !secret camera_preset_4
-  mindergas: /home/pi/mindergas/mindergas.py
+  mindergas: /home/pi/mindergas/mindergas_mqtt.py
 
 scene:
   - name: 'Woonkamer normaal'
@@ -537,6 +571,15 @@ scene 4:
         state: on
         brightness: 140
         rgb_color: [255, 255, 255]
+scene 5:
+  - name: 'Leeslamp flash'
+    entities:
+      light.leeslamp:
+        state: on
+        transition: 2
+        brightness: 255
+        rgb_color: [255, 0 , 0]
+        flash: short
 
 script:
   mindergas:

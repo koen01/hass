@@ -1,0 +1,17 @@
+alias: 'Turn lights on when lux < 200'
+trigger:
+  platform: numeric_state
+  entity_id: sensor.chickencoop_l298n_3_0
+  value_template: '{{ state.attributes.V_LEVEL }}'
+  below: 200
+condition:
+  condition: state
+  entity_id: group.all_devices
+  state: home
+action:
+  - service: scene.turn_on
+    entity_id: scene.woonkamer_normaal
+  - service: notify.telegram_koen
+    data:
+     title: ''
+     message: auto lux {{ now() }}

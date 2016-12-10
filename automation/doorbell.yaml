@@ -11,5 +11,4 @@ action:
     data:
       photo:
         - url: !secret foscam_url
-          caption: 'Doorbell pressed  {{ now() }}'
-
+          caption: Doorbell pressed  {{ now() }}

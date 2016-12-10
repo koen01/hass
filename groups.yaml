@@ -32,6 +32,7 @@ garden:
   entities:
     - light.motionschuur
     - light.Terras
+    - switch.buitenlamp
 
 temperatures_central_heating:
   name: Verwarming
@@ -61,10 +62,10 @@ temp_eetkamer:
 temp_slaapkamers:
   name: Slaapkamers
   entities:
-    - sensor.sensor_2
-    - sensor.slaapkamer_eva
-    - sensor.slaapkamer_eva_2
-    - sensor.sensor_2_2
+    - sensor.slaapkamer_temperature
+    - sensor.slaapkamer_eva_temperature
+    - sensor.slaapkamer_eva_humidity
+    - sensor.slaapkamer_humidity
 
 netatmo_outside:
   name: Buiten
@@ -73,6 +74,7 @@ netatmo_outside:
     - sensor.netatmo_buiten_temperature
     - sensor.netatmo_buiten_humidity
     - sensor.terras
+    - sensor.inkom_temperature
     - sensor.chickencoop_l298n_3_4
     - sensor.chickencoop_l298n_3_3
 
@@ -114,6 +116,17 @@ p1:
     - sensor.p1_total_normal_kwh_rate
     - sensor.p1_total_gas_usage
     - script.mindergas
+
+meter_readings:
+  name: Meter readings
+  entities:
+    - sensor.power_consumption_low
+    - sensor.power_consumption_normal
+    - sensor.power_production_low
+    - sensor.power_production_normal
+    - sensor.gas_consumption
+    - sensor.power_tariff
+    - sensor.power_consumption
 
 floor_heating:
   name: 'Central heating'
@@ -244,10 +257,10 @@ default_view:
     - sensor.netatmo_buiten_temperature
     - sensor.netatmo_binnen_temperature
     - sensor.chickencoop_l298n_3_0
-    - sensor.google_travel_time
     - group.deuren
     - group.garden
     - group.garage
+    - alarm_control_panel.ha_alarm
 
 temperature:
   view: yes
@@ -264,7 +277,7 @@ cameras:
   view: yes
   entities:
     - camera.schuur
-    - camera.pantilt
+    - camera.kippenhok
     - input_select.camera_presets
 
 plants:
@@ -285,6 +298,7 @@ mysensors:
     - group.sensebender
     - switch.test_33_1
     - switch.test_33_2
+    - switch.homie_mqtt_switch
 
 climate:
   view: yes
@@ -299,6 +313,7 @@ smart_meter:
   entities:
     - group.p1
     - group.watermeter
+    - group.meter_readings
 
 status:
   name: Status

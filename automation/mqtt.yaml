@@ -1,0 +1,9 @@
+alias: 'mqtt test'
+trigger:
+  platform: state
+  entity_id: climate.thermostaat
+action:
+  service: mqtt.publish
+  data_template:
+    topic: "devices/5ccf7fc3b1c6/text/on/set"
+    payload: "{{trigger.entity_id}} : {{ states('climate.thermostaat') }} C"

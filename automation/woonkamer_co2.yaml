@@ -1,0 +1,23 @@
+alias: 'Flash lights when Co2 value gets to high'
+trigger:
+  platform: numeric_state
+  entity_id: 'sensor.netatmo_binnen_co2'
+  above: '1000'
+condition:
+  condition: state
+  entity_id: group.all_devices
+  state: home
+action:
+  - service: scene.turn_on
+    entity_id: scene.leeslamp_flash
+  - delay: '1'
+  - service: scene.turn_on
+    entity_id: scene.leeslamp_flash
+  - delay: '1'
+  - service: scene.turn_on
+    entity_id: scene.leeslamp_flash
+  - delay: '1'
+  - service: scene.turn_on
+    entity_id: scene.leeslamp_flash
+  - service: light.turn_off
+    entity_id: light.leeslamp

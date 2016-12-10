@@ -1,7 +1,7 @@
-alias: 'Close carport at 22:00'
+alias: 'Turn off porchlight at 00:00'
 trigger:
   platform: time
-  after: '22:00:00'
+  after: '00:00:00'
 condition:
   condition: time
   weekday:
@@ -13,5 +13,5 @@ condition:
     - sat
     - sun
 action:
-    service: cover.close_cover
-    entity_id: cover.carport
+    service: homeassistant.turn_off
+    entity_id: switch.buitenlamp

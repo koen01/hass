@@ -4,5 +4,5 @@ trigger:
   entity_id: switch.knop_3
   to: 'on' 
 action:
-  service: light.turn_on
-  entity_id: light.terras
+  service: scene.turn_on
+  entity_id: scene.woonkamer_maximaal

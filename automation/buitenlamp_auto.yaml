@@ -1,0 +1,9 @@
+alias: 'Turn porchlight on when the sun gets dim'
+trigger:
+  platform: numeric_state
+  entity_id: sun.sun
+  value_template: '{{ state.attributes.elevation }}'
+  below: 3.5
+action:
+    service: homeassistant.turn_on
+    entity_id: switch.buitenlamp
