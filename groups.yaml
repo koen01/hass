@@ -16,6 +16,10 @@ woonkamer_lights:
     - light.leeslamp
     - light.achterkamer
     - light.woonkamer_muurschakelaar
+
+woonkamer_scenes:
+  name: Woonkamer scenes
+  entities:
     - scene.leeslamp_gedimmed
     - scene.woonkamer_normaal
     - scene.woonkamer_maximaal
@@ -27,12 +31,19 @@ deuren:
     - switch.voordeur
     - switch.achterdeur
 
+camera:
+  name: Camera
+  entities:
+    - camera.schuur
+    - camera.c1
+    - camera.kippenhok
+
 garden:
   name: Tuin
   entities:
     - light.motionschuur
     - light.Terras
-    - switch.buitenlamp
+    - light.buitenlamp
 
 temperatures_central_heating:
   name: Verwarming
@@ -73,7 +84,7 @@ netatmo_outside:
     - sensor.netatmo_binnen_pressure
     - sensor.netatmo_buiten_temperature
     - sensor.netatmo_buiten_humidity
-    - sensor.terras
+    - sensor.terras_temperature
     - sensor.inkom_temperature
     - sensor.chickencoop_l298n_3_4
     - sensor.chickencoop_l298n_3_3
@@ -139,35 +150,32 @@ floor_heating:
 chickencoop:
   name: 'ChickenCoop'
   entities:
-    - switch.chickencoop_l298n_3_1
-    - switch.chickencoop_l298n_3_2
-    - sensor.chickencoop_l298n_3_0
-    - sensor.chickencoop_l298n_3_3
-    - sensor.chickencoop_l298n_3_4
+    - sensor.lux
+    - sensor.kippenhok
 
 watermeter:
   name: 'Watermeter'
   entities:
-    - sensor.water_meter_35_1
-    - sensor.water_meter_35_1_2
+    - sensor.watermeter_count
+    - sensor.watermeter_total
 
 weather:
   entities:
     - sensor.buienradar
-    - sensor.dark_sky_apparent_temperature
-    - sensor.dark_sky_cloud_coverage
-    - sensor.dark_sky_daily_max_precip_intensity
-    - sensor.dark_sky_daily_summary
-    - sensor.dark_sky_hourly_summary
-    - sensor.dark_sky_icon
-    - sensor.dark_sky_minutely_summary
-    - sensor.dark_sky_nearest_storm_bearing
-    - sensor.dark_sky_nearest_storm_distance
-    - sensor.dark_sky_ozone
-    - sensor.dark_sky_precip
-    - sensor.dark_sky_precip_intensity
-    - sensor.dark_sky_precip_probability
-    - sensor.dark_sky_summary
+    # - sensor.dark_sky_apparent_temperature
+    # - sensor.dark_sky_cloud_coverage
+    # - sensor.dark_sky_daily_max_precip_intensity
+    # - sensor.dark_sky_daily_summary
+    # - sensor.dark_sky_hourly_summary
+    # - sensor.dark_sky_icon
+    # - sensor.dark_sky_minutely_summary
+    # - sensor.dark_sky_nearest_storm_bearing
+    # - sensor.dark_sky_nearest_storm_distance
+    # - sensor.dark_sky_ozone
+    # - sensor.dark_sky_precip
+    # - sensor.dark_sky_precip_intensity
+    # - sensor.dark_sky_precip_probability
+    # - sensor.dark_sky_summary
     - camera.neerslag_radar
     - camera.huidig
 
@@ -224,15 +232,20 @@ pihole:
 mysensors_gateway:
   name: mysensors gateway
   entities:
-    - switch.mysensors_gateway
     - switch.mqtt_gateway
 
 sensebender:
   name: sensebender
   entities:
-    - sensor.sensebender_micro_1_36_1
-    - sensor.sensebender_micro_1_36_2
-    - sensor.sensebender_micro_1_36_199
+    - sensor.sensebender_micro_36_1
+    - sensor.sensebender_micro_36_2
+    - sensor.sensebender_micro_36_199
+    # - sensor.3axis_sensor_47_1
+    # - switch.3axis_sensor_47_2
+    - sensor.cube_axis
+    - sensor.cube_volt
+    - binary_sensor.cube_activity
+    - binary_sensor.cube_tap
 
 garage:
   name: garage
@@ -250,17 +263,19 @@ default_view:
   view: yes
   entities:
     - sensor.buienradar
-    - device_tracker.b5c9f20c7160468095576b1835b800c0
-    - device_tracker.nina
+    - binary_sensor.camera_motion
+    - device_tracker.koen_iphonekoen
+    - device_tracker.iphonevannina
     - group.woonkamer_lights
+    - group.woonkamer_scenes
     - group.woonkamer_media
     - sensor.netatmo_buiten_temperature
     - sensor.netatmo_binnen_temperature
-    - sensor.chickencoop_l298n_3_0
+    - sensor.lux
     - group.deuren
     - group.garden
     - group.garage
-    - alarm_control_panel.ha_alarm
+    - light.mqtt_light_rgb
 
 temperature:
   view: yes
@@ -276,8 +291,7 @@ temperature:
 cameras:
   view: yes
   entities:
-    - camera.schuur
-    - camera.kippenhok
+    - group.camera
     - input_select.camera_presets
 
 plants:
@@ -293,12 +307,11 @@ mysensors:
   entities:
     - binary_sensor.molgan_sensor_41_1
     - switch.molgan_sensor_41_2
+    - sensor.homietemp
+    - sensor.cube
     - group.mysensors_gateway
     - group.chickencoop
     - group.sensebender
-    - switch.test_33_1
-    - switch.test_33_2
-    - switch.homie_mqtt_switch
 
 climate:
   view: yes

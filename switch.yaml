@@ -1,0 +1,44 @@
+  - platform: wake_on_lan
+    mac_address: "8C:89:A5:C1:6D:8A"
+    name: "Computer"
+    host: "10.0.1.19"
+
+  - platform: wake_on_lan
+    mac_address: "5C:CF:7F:28:7A:88"
+    name: "MQTT Gateway"
+    host: "10.0.1.17"
+
+  - platform: rfxtrx
+    automatic_add: True
+    devices:
+      0b11003d00cd92fe0a010f70:
+        name: Voordeur
+      0b11001100a38f160a010f60:
+        name: Achterdeur
+      0b11003b00bcf2a201010f60:
+        name: Knop 1
+      0b11003e00bcf2a202010f60:
+        name: Knop 2
+      0b11003f00bcf2a203010f60:
+        name: Knop 3
+      0b1100d001487be201040f70:
+        name: Deurbel
+        fire_event: True
+      0b1100d001500be201040f70:
+        name: Waarschuwing
+        fire_event: True
+      08200330df47000650:
+        name: brandmelder bijkeuken
+        fire_event: True
+#     0b11003c014efe3601010f50:
+#       name: Kerstboom
+
+  - platform: mqtt
+    name: "Homie 2 mqtt switch"
+    state_topic: "devices/5ccf7fc3ae6e/switch_2/on"
+    command_topic: "devices/5ccf7fc3ae6e/switch_2/on/set"
+    payload_on: "true"
+    payload_off: "false"
+    optimistic: false
+    qos: 0
+    retain: true

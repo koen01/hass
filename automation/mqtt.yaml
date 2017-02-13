@@ -1,7 +1,7 @@
 alias: 'mqtt test'
 trigger:
   platform: state
-  entity_id: climate.thermostaat,sensor.netatmo_binnen2_co2, sensor.netatmo_binnen_co2, sensor.netatmo_binnen2_temperature, sensor.netatmo_binnen_temperature, sensor.slaapkamer_eva_temperature, sensor.netatmo_buiten_temperature
+  entity_id: climate.thermostaat,sensor.netatmo_binnen2_co2, sensor.netatmo_binnen_co2, sensor.netatmo_binnen2_temperature, sensor.netatmo_binnen_temperature, sensor.slaapkamer_eva_temperature, sensor.netatmo_buiten_temperature, binary_sensor.camera_motion
 action:
   service: mqtt.publish
   data_template:

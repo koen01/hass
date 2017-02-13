@@ -1,11 +1,11 @@
 alias: 'Chickencoop closed'
 trigger:
   platform: state
-  entity_id: switch.chickencoop_l298n_3_1
-  from: 'on'
-  to: 'off'
+  entity_id: sensor.chickencoop
+  from: 'false'
+  to: 'true'
 action:
-  - service: shell_command.camera_preset_1
+  - service: shell_command.camera_preset_2
   - delay: 00:00:40
   - service: notify.telegram_koen
     data:
@@ -16,7 +16,7 @@ action:
           - url: http://10.0.1.20:99/snapshot.cgi
             username: !secret wanscam_user
             password: !secret wanscam_password
-            caption: Kippenhok just closed  {{ now() }}
+            caption: Kippenhok just closed
   - delay: 00:00:10
   - service: shell_command.camera_preset_4
   - delay: 00:00:30
@@ -28,5 +28,5 @@ action:
         photo:
           - url: http://10.0.1.20:99/snapshot.cgi
             username: !secret wanscam_user
-            password: !secret wanscam_password 
-            caption: Kippenhok closed  {{ now() }}
+            password: !secret wanscam_password
+            caption: Kippenhok closed

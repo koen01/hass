@@ -1,0 +1,8 @@
+alias: 'X+ Axis'
+trigger:
+  platform: state
+  entity_id: sensor.cube_axis
+  to: 'X+'
+action:
+  service: homeassistant.turn_on
+  entity_id: scene.woonkamer_maximaal

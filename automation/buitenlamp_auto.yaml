@@ -6,4 +6,4 @@ trigger:
   below: 3.5
 action:
     service: homeassistant.turn_on
-    entity_id: switch.buitenlamp
+    entity_id: light.buitenlamp

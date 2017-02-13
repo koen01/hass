@@ -1,0 +1,77 @@
+  - platform: mqtt
+    state_topic: "events/p1/1-0:21.7.0"
+    name: "P1 actual energy usage"
+    qos: 0
+    unit_of_measurement: "W"
+    value_template: '{{ value | multiply(1000) }}'
+  - platform: mqtt
+    state_topic: "events/p1/0-1:24.2.1"
+    name: "P1 total gas usage"
+    qos: 0
+    unit_of_measurement: "m3"
+  - platform: mqtt
+    state_topic: "events/p1/1-0:1.8.1"
+    name: "P1 total low kwh rate"
+    qos: 0
+    unit_of_measurement: "W"
+    value_template: '{{ value }}'
+  - platform: mqtt
+    state_topic: "events/p1/1-0:1.8.2"
+    name: "P1 total normal kwh rate"
+    qos: 0
+    unit_of_measurement: "W"
+    value_template: '{{ value }}'
+  - platform: mqtt
+    state_topic: "events/p1/0-0:96.14.0"
+    name: "P1 current rate"
+    qos: 0
+    unit_of_measurement: "rate"
+    value_template: '{{ value }}'
+  - platform: mqtt
+    state_topic: "devices/5ccf7fc3ae6e/lux/lux"
+    name: "Lux"
+    qos: 0
+    unit_of_measurement: "lux"
+    value_template: '{{ value }}'
+  - platform: mqtt
+    state_topic: "devices/5ccf7fc3ae6e/door/open"
+    name: "Chickencoop"
+    qos: 0
+    payload_on: "true"
+    payload_off: "false"
+    sensor_class: opening
+    value_template: '{{ value }}'
+  - platform: mqtt
+    state_topic: "/watermeter/watermeter/Count"
+    name: "Watermeter count"
+    qos: 0
+    unit_of_measurement: "m3"
+    value_template: '{{ value }}'
+  - sensor watermeter_total:
+    platform: mqtt
+    state_topic: "/watermeter/watermeter/Total"
+    name: "Watermeter total"
+    qos: 0
+    unit_of_measurement: "m3"
+    value_template: '{{ value }}'
+  - platform: mqtt
+    state_topic: "devices/5ccf7fd71c72/temperature/degrees"
+    name: "homietemp"
+    qos: 0
+    unit_of_measurement: "c"
+    value_template: '{{ value }}'
+  - platform: mqtt
+    state_topic: "mygateway1-out/47/1/1/0/47"
+    name: "cube axis"
+    qos: 0
+    unit_of_measurement: "axis"
+    value_template: '{{ value }}'
+  - platform: mqtt
+    state_topic: "mygateway1-out/47/199/1/0/38"
+    name: "cube volt"
+    qos: 0
+    unit_of_measurement: "volt"
+    value_template: '{{ value }}'
+  - platform: buienradar
+    name: "Buienradar"
+    timeframe: 600

@@ -1,0 +1,38 @@
+  - platform: template
+    sensors:
+
+      thermostaat_current_operation:
+        entity_id: climate.thermostaat
+        friendly_name: 'Boiler status'
+        value_template: "{{ states.climate.thermostaat.attributes.operation_mode }}"
+
+      thermostaat_current_setpoint:
+        entity_id: climate.thermostaat
+        friendly_name: 'Thermostaat setpoint'
+        value_template: "{{ states.climate.thermostaat.attributes.temperature }}"
+        unit_of_measurement: "°C"
+
+      car:
+        entity_id: sensor.garage_door_sensor_39_2
+        friendly_name: 'Car'
+        value_template: >-
+              {%- if states('sensor.garage_door_sensor_39_2') | float < 100 %}
+                  parked
+              {% else %}
+                  away
+              {%- endif %}
+
+      kippenhok:
+        entity_id: sensor.chickencoop
+        friendly_name: 'Kippenluik'
+        value_template: '{% if is_state("sensor.chickencoop", "false") %}Open{% else %}Closed{% endif %}'
+
+      template_woonkamer_trend:
+        entity_id: binary_sensor.woonkamer_temp_stijgend
+        friendly_name: 'Woonkamer trend'
+        value_template: '{% if is_state("binary_sensor.woonkamer_temp_stijgend", "on") %}Stijgend{% elif is_state("binary_sensor.woonkamer_temp_dalend", "on") %}Dalend{% else %}Onbekend{% endif %}'
+
+      template_eetkamer_trend:
+        entity_id: binary_sensor.eetkamer_temp_stijgend
+        friendly_name: 'Eetkamer trend'
+        value_template: '{% if is_state("binary_sensor.eetkamer_temp_stijgend", "on") %}Stijgend{% elif is_state("binary_sensor.eetkamer_temp_dalend", "on") %}Dalend{% else %}Onbekend{% endif %}'

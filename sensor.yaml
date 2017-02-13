@@ -1,0 +1,95 @@
+  - platform: time_date
+    display_options:
+      - 'time'
+  - platform: speedtest
+    monitored_conditions:
+      - ping
+  - platform: pi_hole
+    host: 127.0.0.1
+  - platform: rfxtrx
+    automatic_add: True
+    devices:
+      0a52077a710e00ac2a0169:
+        name: Slaapkamer Eva
+        data_type:
+         - Temperature
+         - Humidity
+      0a520d743b0200d2350179:
+        name: Slaapkamer
+        data_type:
+         - Temperature
+         - Humidity
+      0a520d6b2103008d380179:
+        name: Inkom
+        data_type:
+         - Temperature
+         - Humidity
+      0a520d23570100da4c0369:
+        name: Terras
+        data_type:
+         - Temperature
+         - Humidity
+  - platform: transmission
+    host: 10.0.1.13
+    port: 9091
+    name: Transmission
+    username: !secret transmission_username
+    password: !secret transmission_password
+    monitored_variables:
+      - 'current_status'
+      - 'download_speed'
+      - 'upload_speed'
+  - platform: google_travel_time
+    name: Google Travel Time
+    api_key: !secret google_api_key
+    origin: !secret google_origin
+    destination: !secret google_destination
+    options:
+      arrival_time: 08:00:00
+  - platform: snmp
+    name: "Synology NAS - Name"
+    host: 10.0.1.13
+    community: public
+    baseoid: .1.3.6.1.4.1.6574.1.5.1.0
+  - platform: snmp
+    name: "Synology NAS - Temp"
+    host: 10.0.1.13
+    community: public
+    baseoid: .1.3.6.1.4.1.6574.1.2.0
+    unit_of_measurement: "°C"
+  - platform: snmp
+    name: "Synology NAS - DSM version"
+    host: 10.0.1.13
+    community: public
+    baseoid: .1.3.6.1.4.1.6574.1.5.3.0
+  - platform: systemmonitor
+    resources:
+      - type: processor_use
+      - type: since_last_boot
+  - platform: netatmo
+    station: Steegstraat
+    modules:
+      Binnen:
+        - temperature
+        - humidity
+        - noise
+        - pressure
+        - co2
+        - wifi_status
+        - min_temp
+        - max_temp
+      Binnen2:
+        - temperature
+        - humidity
+        - co2
+        - battery_vp
+        - min_temp
+        - max_temp
+        - rf_status
+      Buiten:
+        - temperature
+        - humidity
+        - battery_vp
+        - min_temp
+        - max_temp
+        - rf_status

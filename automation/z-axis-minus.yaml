@@ -1,0 +1,8 @@
+alias: 'Z- Axis'
+trigger:
+  platform: state
+  entity_id: sensor.cube_axis
+  to: 'Z-'
+action:
+  service: homeassistant.turn_on
+  entity_id: light.leeslamp

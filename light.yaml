@@ -1,0 +1,49 @@
+
+  - platform: mqtt
+    name: "MQTT Light RGB"
+    state_topic: "devices/5ccf7fd9264e/switch/switch"
+    command_topic: "devices/5ccf7fd9264e/switch/switch/set"
+    rgb_state_topic: "devices/5ccf7fd9264e/led/rgb"
+    rgb_command_topic: "devices/5ccf7fd9264e/led/rgb/set"
+    # state_value_template: "{{ value_json.state }}"
+    # rgb_value_template: "{{ value_json.rgb | join(',') }}"
+    qos: 0
+    command_on_template: "ON"
+    command_off_template: "OFF"
+    optimistic: false
+
+  - platform: mqtt
+    name: "Buitenlamp"
+    state_topic: "devices/5ccf7fe7410b/switch/on"
+    command_topic: "devices/5ccf7fe7410b/switch/on/set"
+    payload_on: "true"
+    payload_off: "false"
+    optimistic: false
+    qos: 0
+    retain: true
+
+  - platform: limitlessled
+    bridges:
+      - host: 10.0.1.22
+        version: 5
+        port: 8899
+        groups:
+        - number: 1
+          type: rgbw
+          name: TV Hoek
+        - number: 3
+          type: rgbw
+          name: Leeslamp
+        - number: 4
+          type: rgbw
+          name: Achterkamer
+
+  - platform: rfxtrx
+    automatic_add: True
+    devices:
+      0b110042009b490602010f70:
+          name: Woonkamer muurschakelaar
+      0b11003b0001020305010f60:
+          name: Terras
+      0b11002f00b4c65e0a010f50:
+          name: Motion/Schuur

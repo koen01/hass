@@ -1,7 +1,7 @@
-alias: 'Turn off porchlight at 00:00'
+alias: 'Turn on christmas lights at 09:15'
 trigger:
   platform: time
-  after: '00:00:00'
+  after: '08:15:00'
 condition:
   condition: time
   weekday:
@@ -13,5 +13,5 @@ condition:
     - sat
     - sun
 action:
-    service: homeassistant.turn_off
-    entity_id: light.buitenlamp
+    service: homeassistant.turn_on
+    entity_id: switch.kerstboom

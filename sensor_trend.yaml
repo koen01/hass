@@ -1,0 +1,20 @@
+- platform: trend
+  sensors:
+    woonkamer_temp_stijgend:
+      friendly_name: 'Woonkamer temp stijgend'
+      entity_id: sensor.netatmo_binnen_temperature
+      sensor_class: heat
+    woonkamer_temp_dalend:
+      friendly_name: 'Woonkamer temp dalend'
+      entity_id: sensor.netatmo_binnen_temperature
+      sensor_class: cold
+      invert: yes
+    eetkamer_temp_stijgend:
+      friendly_name: 'Eetkamer temp stijgend'
+      entity_id: sensor.netatmo_binnen2_temperature
+      sensor_class: heat
+    eetkamer_temp_dalend:
+      friendly_name: 'Eetkamer temp dalend'
+      entity_id: sensor.netatmo_binnen2_temperature
+      sensor_class: cold
+      invert: yes

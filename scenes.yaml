@@ -1,0 +1,51 @@
+  - name: 'Woonkamer normaal'
+    entities:
+      light.tv_hoek:
+        state: on
+        brightness: 140
+        rgb_color: [255, 255, 255]
+      light.leeslamp: off
+      light.achterkamer:
+        state: on
+        brightness: 140
+        rgb_color: [255, 255, 255]
+
+  - name: 'Woonkamer maximaal'
+    entities:
+      light.tv_hoek:
+        state: on
+        brightness: 255
+        transition: 0
+      light.leeslamp:
+        state: on
+        brightness: 255
+        transition: 0
+      light.achterkamer:
+        state: on
+        brightness: 255
+        transition: 0
+
+  - name: 'Woonkamer gedimmed'
+    entities:
+      light.tv_hoek:
+        state: on
+        brightness: 155
+        rgb_color: [255, 130, 2]
+      light.leeslamp: off
+      light.achterkamer: off
+
+  - name: 'Leeslamp gedimmed'
+    entities:
+      light.leeslamp:
+        state: on
+        brightness: 140
+        rgb_color: [255, 255, 255]
+
+  - name: 'Leeslamp flash'
+    entities:
+      light.leeslamp:
+        state: on
+        transition: 2
+        brightness: 255
+        rgb_color: [255, 0 , 0]
+        flash: short
