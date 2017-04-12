@@ -1,0 +1,18 @@
+alias: Turn off light 15 seconds after last movement
+trigger:
+  platform: state
+  entity_id: binary_sensor.ledstrip_motion
+  to: 'off'
+  for:
+    seconds: 15
+# condition:
+#   condition: or
+#   conditions:
+#     - condition: template
+#       value_template: '{{ states.sun.sun.attributes.elevation > 3.5 }}'
+#     - condition: state
+#       entity_id: input_boolean.allways_detect
+#       state: 'on'
+action:
+  service: homeassistant.turn_off
+  entity_id: light.mqtt_light_strip_rgb

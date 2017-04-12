@@ -11,3 +11,4 @@ condition:
 action:
     service: scene.turn_on
     entity_id: scene.woonkamer_normaal
+

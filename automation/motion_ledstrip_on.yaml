@@ -1,0 +1,16 @@
+alias: Turn on ledstrip when there is movement
+trigger:
+  platform: state
+  entity_id: binary_sensor.ledstrip_motion
+  to: 'on'
+condition:
+  condition: or
+  conditions:
+    - condition: template
+      value_template: '{{ states.sun.sun.attributes.elevation > 3.5 }}'
+    - condition: state
+      entity_id: input_boolean.allways_detect
+      state: 'on'
+action:
+  service: homeassistant.turn_on
+  entity_id: light.mqtt_light_strip_rgb

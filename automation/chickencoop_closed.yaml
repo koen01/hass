@@ -5,7 +5,7 @@ trigger:
   from: 'false'
   to: 'true'
 action:
-  - service: shell_command.camera_preset_2
+  - service: shell_command.camera_preset_3
   - delay: 00:00:40
   - service: notify.telegram_koen
     data:

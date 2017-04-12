@@ -5,4 +5,4 @@ trigger:
   to: 'Z+'
 action:
   service: homeassistant.turn_off
-  entity_id: light.leeslamp
+  entity_id: group.woonkamer_lights

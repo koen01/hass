@@ -1,12 +1,12 @@
 
   - platform: mqtt
     name: "MQTT Light RGB"
-    state_topic: "devices/5ccf7fd9264e/switch/switch"
-    command_topic: "devices/5ccf7fd9264e/switch/switch/set"
-    rgb_state_topic: "devices/5ccf7fd9264e/led/rgb"
-    rgb_command_topic: "devices/5ccf7fd9264e/led/rgb/set"
-    # state_value_template: "{{ value_json.state }}"
-    # rgb_value_template: "{{ value_json.rgb | join(',') }}"
+    state_topic: "devices/5ccf7fd9264/switch/switch"
+    command_topic: "devices/5ccf7fd9264/switch/switch/set"
+    rgb_state_topic: "devices/5ccf7fd9264/led/rgb"
+    rgb_command_topic: "devices/5ccf7fd9264/led/rgb/set"
+    brightness_command_topic: "devices/5ccf7fd9264/brightness/brightness/set"
+    brightness_state_topic: "devices/5ccf7fd9264/brightness/brightness"
     qos: 0
     command_on_template: "ON"
     command_off_template: "OFF"
@@ -24,19 +24,19 @@
 
   - platform: limitlessled
     bridges:
-      - host: 10.0.1.22
-        version: 5
-        port: 8899
-        groups:
-        - number: 1
-          type: rgbw
-          name: TV Hoek
-        - number: 3
-          type: rgbw
-          name: Leeslamp
-        - number: 4
-          type: rgbw
-          name: Achterkamer
+       - host: 10.0.1.22
+         version: 5
+         port: 8899
+         groups:
+         - number: 1
+           type: rgbw
+           name: TV Hoek
+         - number: 3
+           type: rgbw
+           name: Leeslamp
+         - number: 4
+           type: rgbw
+           name: Achterkamer
 
   - platform: rfxtrx
     automatic_add: True
@@ -47,3 +47,16 @@
           name: Terras
       0b11002f00b4c65e0a010f50:
           name: Motion/Schuur
+
+  - platform: mqtt
+    name: "MQTT Light Strip RGB"
+    state_topic: "devices/5ccf7fd71c7/switch/switch"
+    command_topic: "devices/5ccf7fd71c7/switch/switch/set"
+    rgb_state_topic: "devices/5ccf7fd71c7/led/rgb"
+    rgb_command_topic: "devices/5ccf7fd71c7/led/rgb/set"
+    brightness_command_topic: "devices/5ccf7fd71c7/brightness/brightness/set"
+    brightness_state_topic: "devices/5ccf7fd71c7/brightness/brightness"
+    qos: 0
+    command_on_template: "ON"
+    command_off_template: "OFF"
+    optimistic: false

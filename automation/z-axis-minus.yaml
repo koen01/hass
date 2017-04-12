@@ -5,4 +5,4 @@ trigger:
   to: 'Z-'
 action:
   service: homeassistant.turn_on
-  entity_id: light.leeslamp
+  entity_id: light.woonkamer_muurschakelaar

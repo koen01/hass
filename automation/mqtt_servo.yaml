@@ -1,0 +1,10 @@
+alias: Servo degrees set
+trigger:
+  platform: state
+  entity_id: input_slider.servo
+action:
+  service: mqtt.publish
+  data_template:
+    topic: "devices/5ccf7fd71c7/servo/degrees/set"
+    retain: true
+    payload: '{{ states.input_slider.servo.state |int }}'

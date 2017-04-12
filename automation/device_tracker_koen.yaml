@@ -1,9 +1,0 @@
-alias: 'Koen changed states'
-trigger:
-  platform: state
-  entity_id: device_tracker.koen_iphonekoen
-action:
-  service: notify.telegram_koen
-  data:
-    title: ''
-    message: Koen just changed to {{ states('device_tracker.koen_iphonekoen') }} {{ now() }}

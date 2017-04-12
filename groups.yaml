@@ -27,6 +27,7 @@ woonkamer_scenes:
 
 deuren:
   name: Deuren
+  control: hidden
   entities:
     - switch.voordeur
     - switch.achterdeur
@@ -35,11 +36,12 @@ camera:
   name: Camera
   entities:
     - camera.schuur
-    - camera.c1
+    #- camera.c1
     - camera.kippenhok
 
 garden:
   name: Tuin
+  control: hidden
   entities:
     - light.motionschuur
     - light.Terras
@@ -108,9 +110,11 @@ woonkamer_media:
   name: Woonkamer multimedia
   entities:
     - switch.computer
+    - media_player.kodi
 
 irrigation:
   name: 'Irrigation controller'
+  control: hidden
   entities:
     - input_slider.sprinklertimer
     - input_boolean.sprinkler
@@ -233,6 +237,14 @@ mysensors_gateway:
   name: mysensors gateway
   entities:
     - switch.mqtt_gateway
+    - switch.airport_express
+
+moisture:
+  name: solar moisture
+  entities:
+    - sensor.moisture_sensor_48_0
+    - sensor.moisture_sensor_48_1
+    - sensor.moisture_sensor_48_1_battery
 
 sensebender:
   name: sensebender
@@ -240,12 +252,21 @@ sensebender:
     - sensor.sensebender_micro_36_1
     - sensor.sensebender_micro_36_2
     - sensor.sensebender_micro_36_199
+3axis:
+  name: 3axis
+  entities:
     # - sensor.3axis_sensor_47_1
     # - switch.3axis_sensor_47_2
     - sensor.cube_axis
     - sensor.cube_volt
     - binary_sensor.cube_activity
     - binary_sensor.cube_tap
+
+mqtt_light:
+  name: mqtt lights
+  entities:
+    - light.mqtt_light_rgb
+    - light.mqtt_light_strip_rgb
 
 garage:
   name: garage
@@ -266,6 +287,7 @@ default_view:
     - binary_sensor.camera_motion
     - device_tracker.koen_iphonekoen
     - device_tracker.iphonevannina
+    - device_tracker.traccar_ford
     - group.woonkamer_lights
     - group.woonkamer_scenes
     - group.woonkamer_media
@@ -275,7 +297,6 @@ default_view:
     - group.deuren
     - group.garden
     - group.garage
-    - light.mqtt_light_rgb
 
 temperature:
   view: yes
@@ -305,13 +326,18 @@ mysensors:
   name: mysensors
   view: yes
   entities:
+    - device_tracker.34
+    - device_tracker.35
     - binary_sensor.molgan_sensor_41_1
     - switch.molgan_sensor_41_2
-    - sensor.homietemp
-    - sensor.cube
     - group.mysensors_gateway
+    - group.moisture
     - group.chickencoop
     - group.sensebender
+    - group.3axis
+    - group.mqtt_light
+    - input_slider.servo
+    - binary_sensor.ledstrip_motion
 
 climate:
   view: yes
@@ -347,3 +373,4 @@ notify:
     - input_boolean.notify_doors
     - switch.deurbel
     - switch.waarschuwing
+    - input_boolean.allways_detect

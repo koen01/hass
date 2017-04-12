@@ -1,0 +1,9 @@
+alias: 'Auto changed states'
+trigger:
+  platform: state
+  entity_id: device_tracker.34
+action:
+  service: notify.telegram_koen
+  data:
+    title: ''
+    message: Auto just changed to {{ states('device_tracker.koen_iphonekoen') }} {{ now() }}

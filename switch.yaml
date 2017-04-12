@@ -8,6 +8,16 @@
     name: "MQTT Gateway"
     host: "10.0.1.17"
 
+  - platform: wake_on_lan
+    mac_address: "BC:F2:AF:C6:FA:84"
+    name: "Airport express"
+    host: "10.0.1.62"
+
+  - platform: wake_on_lan
+    mac_address: "28:6C:07:44:82:5D"
+    name: "Xiaomi Router 3"
+    host: "10.0.1.1"
+
   - platform: rfxtrx
     automatic_add: True
     devices:

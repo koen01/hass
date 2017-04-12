@@ -2,12 +2,12 @@
     entities:
       light.tv_hoek:
         state: on
-        brightness: 140
+        brightness: 188
         rgb_color: [255, 255, 255]
       light.leeslamp: off
       light.achterkamer:
         state: on
-        brightness: 140
+        brightness: 188
         rgb_color: [255, 255, 255]
 
   - name: 'Woonkamer maximaal'
@@ -38,7 +38,7 @@
     entities:
       light.leeslamp:
         state: on
-        brightness: 140
+        brightness: 188
         rgb_color: [255, 255, 255]
 
   - name: 'Leeslamp flash'

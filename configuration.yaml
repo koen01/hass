@@ -26,9 +26,12 @@ zone:
   icon: mdi:worker
 
 logger:
-  default: info
+  default: debug
   # logs:
   #   mysensors.mysensors: debug
+
+battery_state:
+
 
 sun:
 frontend:
@@ -38,14 +41,16 @@ logbook:
 ios:
 
 recorder:
-  purge_days: 7
-  db_url: mysql://homeassistant:homeassistant@10.0.1.13:3306/homeassistant
+  #purge_days: 7
+  db_url: mysql://homeassistant:homeassistant@127.0.0.1:3306/homeassistant
 
 http:
   api_password: !secret http_password
   server_port: 8124
-  ssl_certificate: /etc/letsencrypt/live/koen01.synology.me/fullchain.pem
-  ssl_key: /etc/letsencrypt/live/koen01.synology.me/privkey.pem
+#  ssl_certificate: /etc/letsencrypt/live/koen01.synology.me/fullchain.pem
+#  ssl_key: /etc/letsencrypt/live/koen01.synology.me/privkey.pem
+  trusted_networks:
+    - 10.0.1.0/24
 
 mqtt:
   broker: 10.0.1.59
@@ -53,16 +58,11 @@ mqtt:
   username: !secret mqtt_username
   password: !secret mqtt_password
 
-mqtt_export:
-  publish_topic: "home/states"
+#mqtt_export:
+#  publish_topic: "home/states"
 
 alarm_control_panel:
   platform: manual
-
-thingspeak:
-  api_key: IXN070RXZME6PG92
-  id: 203628
-  whitelist: sensor.netatmo_buiten_temperature
 
 influxdb:
   host: 127.0.0.1
@@ -72,6 +72,14 @@ influxdb:
 
 device_tracker:
   - platform: owntracks
+  - platform: traccar
+    username: !secret traccar_user
+    password: !secret traccar_password
+    host: !secret traccar_host
+  - platform: iphonedetect
+    hosts:
+      koen_iphonekoen: 10.0.1.222
+      iphonevannina: 10.0.1.140
 
 netatmo:
   api_key: !secret netatmo_api_key
@@ -140,9 +148,6 @@ rfxtrx:
 
 mysensors:
   gateways:
-    # - device: '10.0.1.17'
-    #   persistence_file: '/home/hass/.homeassistant/mysensors.json'
-    #   tcp_port: 5003
     - device: mqtt
       persistence_file: '/home/hass/.homeassistant/mysensors_mqtt.json'
       topic_in_prefix: 'mygateway1-out'
@@ -155,7 +160,7 @@ mysensors:
 
 media_player:
   platform: kodi
-  host: http://10.0.1.19
+  host: http://10.0.1.48
   port: 8080
   name: Kodi
   username: 1234
@@ -176,6 +181,13 @@ input_slider:
     min: 0
     max: 60
     step: 5
+  servo:
+    name: Servo Slider
+    min: 0
+    max: 170
+    step: 1
+    unit_of_measurement: degrees
+    icon: mdi:target
 
 input_select:
   camera_presets:
@@ -197,6 +209,10 @@ input_boolean:
     name: Sprinkler program
     initial: off
     icon: mdi:timer
+  allways_detect:
+    name: Allways detect motion
+    initial: off
+    icon: mdi:run-fast
 
 shell_command:
   camera_preset_1: !secret camera_preset_1

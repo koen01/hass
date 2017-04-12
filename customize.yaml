@@ -142,4 +142,6 @@
        assumed_state: false
      sensor.cube:
        icon: mdi:cube-send
+     device_tracker.traccar_ford:
+       icon: mdi:car
        
