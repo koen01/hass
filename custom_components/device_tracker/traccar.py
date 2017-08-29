@@ -47,7 +47,7 @@ class TraccarDeviceScanner(object):
         _LOGGER.debug('Updating devices %s', now)
         self._devices = requests.get(self._host + '/api/devices', auth=(self._username, self._password))
         self._device_data = json.loads(self._devices.text)
-        self._positions = requests.get(self._host + '/api/positions', auth=(self._username, self._password))
+        self._positions = requests.get(self._host + '/api/positions', auth=(self._username, self._password), headers = ({'Accept': 'application/json'}))
         self._positions_data = json.loads(self._positions.text)
         for dev_id in self._device_data:
             _id=dev_id['id']
