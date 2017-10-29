@@ -50,7 +50,7 @@ class TraccarDeviceScanner(object):
         self._positions = requests.get(self._host + '/api/positions', auth=(self._username, self._password), headers = ({'Accept': 'application/json'}))
         self._positions_data = json.loads(self._positions.text)
         for dev_id in self._device_data:
-            _id=dev_id['id']
+            _id=dev_id['name']
             _name = dev_id['name']
             for position_id in self._positions_data:
                 if position_id['id'] == dev_id['positionId']:
@@ -58,7 +58,6 @@ class TraccarDeviceScanner(object):
                     _gps_accuracy=position_id['accuracy']
                     _attrs = {
                         'totalDistance': position_id['attributes']['totalDistance'],
-                        'ip': position_id['attributes']['ip'],
                         'protocol': position_id['protocol'],
                         'speed': position_id['speed'],
                         'address': position_id['address'],
@@ -66,7 +65,7 @@ class TraccarDeviceScanner(object):
                         'lastUpdate': dev_id['lastUpdate']
                         }
                     self.see(
-                        dev_id=_id,
+                        dev_id=slugify(_id),
                         host_name=slugify(_name),
                         gps=_gps,
                         gps_accuracy=_gps_accuracy,
